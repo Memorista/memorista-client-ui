@@ -10,7 +10,7 @@ export const useEntries = () => {
     const newEntry = await request.post('/entries', entry);
 
     if (response.ok) {
-      setEntries([...entries, newEntry]);
+      setEntries([newEntry, ...entries]);
     }
   };
 

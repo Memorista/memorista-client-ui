@@ -1,15 +1,16 @@
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { SyncLoader } from 'react-spinners';
-import { useEntries } from './Utils/API';
 import './App.css';
+import { useEntries } from './Utils/API';
 
 export default () => {
   const { entries, createEntry, isLoading } = useEntries();
   const [author, setAuthor] = useState('');
   const [text, setText] = useState('');
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     await createEntry({ author, text, timestamp: getUnixTime(new Date()) });
   };
 
