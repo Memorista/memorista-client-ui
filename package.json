@@ -3,20 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.36",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "date-fns": "2.12.0",
+    "milligram": "1.3.0",
+    "normalize.css": "8.0.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "react-scripts": "3.4.1",
-    "typescript": "^3.7.5"
+    "react-spinners": "0.8.1",
+    "use-http": "1.0.6"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "4.2.4",
+    "@testing-library/react": "9.5.0",
+    "@testing-library/user-event": "7.2.1",
+    "@types/jest": "24.9.1",
+    "@types/node": "12.12.36",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.6",
+    "typescript": "3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:mock-server": "json-server --watch mock.json --port 3001",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

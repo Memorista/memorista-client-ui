@@ -1,17 +1,30 @@
+import 'milligram/dist/milligram.min.css';
+import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'use-http';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import './index.css';
+
+interface GuestyConfig {
+  container: Element | null;
+  apiBaseUrl: string;
+}
+
+declare global {
+  interface Window {
+    guestyConfig: GuestyConfig;
+  }
+}
+
+window.guestyConfig = window.guestyConfig || null;
+const config: GuestyConfig = window.guestyConfig;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider url={config.apiBaseUrl}>
+      <App />
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  config.container
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
