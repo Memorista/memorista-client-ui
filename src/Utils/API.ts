@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import useFetch from 'use-http';
 import { Entry, NewEntry } from '../Models/Entry';
 
@@ -14,17 +14,17 @@ export const useEntries = () => {
     }
   };
 
-  const init = useCallback(async () => {
-    const data = await request.get('/entries?_sort=timestamp&_order=desc');
-    if (response.ok) setEntries(data);
-
-    // TODO: finally find out what this is all about
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
+    const init = async () => {
+      const data = await request.get('/entries?_sort=timestamp&_order=desc');
+
+      if (response.ok) {
+        setEntries(data);
+      }
+    };
+
     init();
-  }, [init]);
+  }, [request, response]);
 
   return {
     entries,
