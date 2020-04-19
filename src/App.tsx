@@ -27,7 +27,7 @@ export default () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-lg-8">
+        <div className="col-sm">
           {!submittedEntryId ? (
             <CreateEntryForm
               author={author}
