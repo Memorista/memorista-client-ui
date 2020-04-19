@@ -7,11 +7,14 @@ export const useEntries = () => {
   const [request, response] = useFetch();
 
   const createEntry = async (entry: NewEntry) => {
-    const newEntry = await request.post('/entries', entry);
+    const newEntry: Entry = await request.post('/entries', entry);
 
-    if (response.ok) {
-      setEntries([newEntry, ...entries]);
+    if (!response.ok) {
+      return null;
     }
+
+    setEntries([newEntry, ...entries]);
+    return newEntry;
   };
 
   useEffect(() => {
