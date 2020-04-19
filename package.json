@@ -18,19 +18,22 @@
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
-    "@types/classnames": "^2.2.10",
+    "@types/classnames": "2.2.10",
     "@types/jest": "24.9.1",
     "@types/node": "12.12.36",
     "@types/react": "16.9.34",
     "@types/react-dom": "16.9.6",
     "json-server": "0.16.1",
     "prettier": "2.0.4",
-    "typescript": "3.7.5"
+    "typescript": "3.7.5",
+    "uglifyjs-webpack-plugin": "2.2.0",
+    "webpack-cli": "3.3.11"
   },
   "scripts": {
     "start": "react-scripts start",
     "start:mock-server": "json-server --watch mock.json --port 3001",
     "build": "react-scripts build",
+    "bundle": "webpack --config bundle.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
