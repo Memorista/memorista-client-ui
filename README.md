@@ -17,12 +17,12 @@
 
 ```html
 <div id="guesty-root"></div>
+<script src="/dist/guesty.min.js"></script>
 <script>
-  window.guestyConfig = {
+  Guesty.init({
     container: document.getElementById('guesty-root'),
     apiBaseUrl: 'http://localhost:3000',
     apiKey: '',
-  };
+  });
 </script>
-<script src="/dist/guesty.min.js"></script>
 ```
