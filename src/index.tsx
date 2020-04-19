@@ -1,8 +1,8 @@
-import 'bootswatch/dist/cosmo/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'use-http';
 import App from './App';
+import Theme from './Theme';
 
 interface GuestyConfig {
   container: Element | null;
@@ -12,6 +12,7 @@ interface GuestyConfig {
 export const init = (config: GuestyConfig) => {
   ReactDOM.render(
     <React.StrictMode>
+      <Theme />
       <Provider url={config.apiBaseUrl}>
         <App />
       </Provider>

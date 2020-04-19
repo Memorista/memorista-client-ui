@@ -1,10 +1,10 @@
 import { getUnixTime } from 'date-fns';
 import React, { FormEvent, useState } from 'react';
 import { SyncLoader } from 'react-spinners';
-import Entry from './Components/Entry';
-import { useEntries } from './Utils/API';
 import CreateEntryForm from './Components/CreateEntryForm';
+import Entry from './Components/Entry';
 import SuccessMessage from './Components/SuccessMessage';
+import { useEntries } from './Utils/API';
 
 export default () => {
   const { entries, createEntry, isLoading } = useEntries();
