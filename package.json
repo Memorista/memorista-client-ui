@@ -1,6 +1,6 @@
 {
   "name": "guesty-client-ui",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@emotion/core": "10.0.28",
@@ -10,46 +10,23 @@
     "date-fns": "2.12.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-scripts": "3.4.1",
     "react-spinners": "0.8.1",
     "use-http": "1.0.6"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "4.2.4",
-    "@testing-library/react": "9.5.0",
-    "@testing-library/user-event": "7.2.1",
     "@types/classnames": "2.2.10",
     "@types/jest": "24.9.1",
     "@types/node": "12.12.36",
     "@types/react": "16.9.34",
     "@types/react-dom": "16.9.6",
     "json-server": "0.16.1",
+    "parcel-bundler": "1.12.4",
     "prettier": "2.0.4",
-    "typescript": "3.7.5",
-    "uglifyjs-webpack-plugin": "2.2.0",
-    "webpack-cli": "3.3.11"
+    "typescript": "3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start:mock-server": "json-server --watch mock.json --port 3001",
-    "build": "react-scripts build",
-    "bundle": "webpack --config bundle.config.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.tsx --out-file guesty.min.js",
+    "mock": "json-server --watch mock.json"
   }
 }
