@@ -7,14 +7,6 @@
 
 # Embeddable code snippet
 
-## Head
-
-```html
-<link rel="stylesheet" href="/dist/guesty.min.css" />
-```
-
-## Body
-
 ```html
 <div id="guesty-root"></div>
 <script src="/dist/guesty.min.js"></script>
