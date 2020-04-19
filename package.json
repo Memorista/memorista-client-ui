@@ -25,7 +25,7 @@
     "typescript": "3.7.5"
   },
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html --out-dir build",
     "build": "parcel build src/index.tsx --out-file guesty.min.js",
     "mock": "json-server --watch mock.json"
   }
