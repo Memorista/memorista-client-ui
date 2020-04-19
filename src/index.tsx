@@ -1,9 +1,8 @@
-import 'normalize.css';
+import 'bootswatch/dist/cosmo/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'use-http';
 import App from './App';
-import './index.css';
 
 interface GuestyConfig {
   container: Element | null;

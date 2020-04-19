@@ -4,6 +4,7 @@ import { SyncLoader } from 'react-spinners';
 import Entry from './Components/Entry';
 import { useEntries } from './Utils/API';
 import CreateEntryForm from './Components/CreateEntryForm';
+import SuccessMessage from './Components/SuccessMessage';
 
 export default () => {
   const { entries, createEntry, isLoading } = useEntries();
@@ -25,25 +26,32 @@ export default () => {
 
   return (
     <div className="container">
-      {!submittedEntryId ? (
-        <CreateEntryForm
-          author={author}
-          onChangeAuthor={setAuthor}
-          text={text}
-          onChangeText={setText}
-          onSubmit={onSubmit}
-        />
-      ) : (
-        <div>Nice!</div>
-      )}
-      {isLoading && (
-        <div className="loader">
-          <SyncLoader />
+      <div className="row">
+        <div className="col-lg-8">
+          {!submittedEntryId ? (
+            <CreateEntryForm
+              author={author}
+              onChangeAuthor={setAuthor}
+              text={text}
+              onChangeText={setText}
+              onSubmit={onSubmit}
+            />
+          ) : (
+            <SuccessMessage />
+          )}
+          <hr />
+          {isLoading && (
+            <div className="loader">
+              <SyncLoader />
+            </div>
+          )}
+          <div>
+            {entries &&
+              entries.map((entry) => (
+                <Entry key={entry.id} entry={entry} isHighlighted={entry.id.toString() === submittedEntryId} />
+              ))}
+          </div>
         </div>
-      )}
-      <div>
-        {entries &&
-          entries.map((entry) => <Entry key={entry.id} entry={entry} isHighlighted={entry.id === submittedEntryId} />)}
       </div>
     </div>
   );
