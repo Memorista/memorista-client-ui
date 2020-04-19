@@ -9,20 +9,13 @@ interface GuestyConfig {
   apiBaseUrl: string;
 }
 
-declare global {
-  interface Window {
-    guestyConfig: GuestyConfig;
-  }
-}
-
-window.guestyConfig = window.guestyConfig || null;
-const config: GuestyConfig = window.guestyConfig;
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider url={config.apiBaseUrl}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  config.container
-);
+export const init = (config: GuestyConfig) => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider url={config.apiBaseUrl}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+    config.container
+  );
+};

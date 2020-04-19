@@ -21,8 +21,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "parcel src/index.html --out-dir build",
-    "build": "parcel build src/index.tsx --out-file guesty.min.js",
+    "start": "parcel src/index.html --global Guesty --out-dir build --open",
+    "build": "parcel build src/index.tsx --global Guesty --out-file guesty.min.js --no-source-maps",
     "mock": "json-server --watch mock.json"
   }
 }

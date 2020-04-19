@@ -7,13 +7,13 @@
   </head>
   <body>
     <div id="guesty-root"></div>
+    <script src="./index.tsx"></script>
     <script>
-      window.guestyConfig = {
+      Guesty.init({
         container: document.getElementById('guesty-root'),
         apiBaseUrl: 'http://localhost:3000',
         apiKey: '',
-      };
+      });
     </script>
-    <script src="./index.tsx"></script>
   </body>
 </html>
