@@ -1,3 +1,4 @@
+import { getUnixTime } from 'date-fns';
 import { Formik } from 'formik';
 import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
@@ -16,7 +17,7 @@ const schema = object({
 
 export default ({ createEntry, onSubmittedEntryIdChange }: Props) => {
   const onSubmit = async (newEntry: NewEntry) => {
-    const createdEntry = await createEntry(newEntry);
+    const createdEntry = await createEntry({ ...newEntry, timestamp: getUnixTime(new Date()) });
 
     if (!createdEntry) {
       return;
