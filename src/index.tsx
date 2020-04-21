@@ -11,8 +11,14 @@ export interface GuestyConfig {
 }
 
 export const init = (config: GuestyConfig) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${config.apiKey}`,
+    },
+  };
+
   ReactDOM.render(
-    <Provider url={config.apiBaseUrl}>
+    <Provider url={config.apiBaseUrl} options={options}>
       <App config={config} />
     </Provider>,
     config.container
