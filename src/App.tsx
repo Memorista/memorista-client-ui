@@ -16,17 +16,23 @@ import {
 import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useState } from 'react';
+import { GuestyConfig } from '.';
 import { NewEntry } from './Models/Entry';
-import { useEntries } from './Utils/API';
+import { useEntries, useGuestbook } from './Utils/API';
 
-export default () => {
-  const { entries, createEntry, isLoading } = useEntries();
+interface Props {
+  config: GuestyConfig;
+}
+
+export default ({ config }: Props) => {
+  const { guestbook } = useGuestbook(config.apiKey);
+  const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
   const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('guesty:submittedEntryId'));
 
   const onFinish = async (values: Store) => {
     const { author, text } = values as NewEntry;
-    const createdEntry = await createEntry({ author, text, timestamp: getUnixTime(new Date()) });
+    const createdEntry = await createEntry({ author, text, creationTimestamp: getUnixTime(new Date()) });
 
     if (!createdEntry) {
       return;
@@ -38,10 +44,8 @@ export default () => {
 
   return (
     <Layout style={{ backgroundColor: '#FFF' }}>
-      <PageHeader title="Our guestbook">
-        <Typography.Text>
-          We are always trying to satisfy our guests. If you have any feedback we would love to hear from you!
-        </Typography.Text>
+      <PageHeader title={guestbook?.title}>
+        <Typography.Text>{guestbook?.description}</Typography.Text>
       </PageHeader>
       <Layout.Content style={{ padding: '16px 24px' }}>
         {!submittedEntryId ? (
@@ -70,7 +74,7 @@ export default () => {
           dataSource={entries}
           loading={isLoading}
           renderItem={(entry) => {
-            const date = fromUnixTime(entry.timestamp);
+            const date = fromUnixTime(entry.creationTimestamp);
             let avatar = <Avatar src="http://placehold.it/64x64" />;
             if (entry.id.toString() === submittedEntryId?.toString()) {
               avatar = (

@@ -1,13 +1,45 @@
 import { useEffect, useState } from 'react';
 import useFetch from 'use-http';
 import { Entry, NewEntry } from '../Models/Entry';
+import { Guestbook } from '../Models/Guestbook';
 
-export const useEntries = () => {
+export const useGuestbook = (apiKey: string) => {
+  const [guestbook, setGuestbook] = useState<Guestbook>();
+  const [request, response] = useFetch();
+
+  useEffect(() => {
+    const init = async () => {
+      const data = await request.get('/guestbooks');
+
+      if (!response.ok || !data.length) {
+        setGuestbook(undefined);
+        console.warn('Guesty: Failed to fetch guestbook. Make sure your API key is correct.');
+        return;
+      }
+
+      setGuestbook(data[0]);
+    };
+
+    init();
+  }, [request, response, apiKey]);
+
+  return {
+    guestbook,
+    isLoading: request.loading,
+    error: request.error,
+  };
+};
+
+export const useEntries = (guestbookId: string | undefined) => {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [request, response] = useFetch();
 
   const createEntry = async (entry: NewEntry) => {
-    const newEntry: Entry = await request.post('/entries', entry);
+    if (!guestbookId) {
+      return null;
+    }
+
+    const newEntry: Entry = await request.post(`/guestbooks/${guestbookId}/entries`, entry);
 
     if (!response.ok) {
       return null;
@@ -18,16 +50,21 @@ export const useEntries = () => {
   };
 
   useEffect(() => {
-    const init = async () => {
-      const data = await request.get('/entries?_sort=timestamp&_order=desc');
-
-      if (response.ok) {
-        setEntries(data);
+    (async () => {
+      if (!guestbookId) {
+        setEntries([]);
+        return;
       }
-    };
 
-    init();
-  }, [request, response]);
+      const data = await request.get(`/guestbooks/${guestbookId}/entries`);
+
+      if (!response.ok) {
+        return;
+      }
+
+      setEntries(data);
+    })();
+  }, [request, response, guestbookId]);
 
   return {
     entries,

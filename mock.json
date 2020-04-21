@@ -1,28 +1,37 @@
 {
+  "guestbooks": [
+    {
+      "id": "1",
+      "apiKey": "fakeApiKey",
+      "title": "Our guestbook",
+      "description": "We are always trying to satisfy our guests. If you have any feedback we would love to hear from you!",
+      "languageTag": "en"
+    }
+  ],
   "entries": [
     {
-      "id": 1,
-      "text": "When I enter the store, I always leave it happy.",
+      "id": "1",
       "author": "Jon Doe",
-      "timestamp": 1587241208
+      "text": "When I enter the store, I always leave it happy.",
+      "creationTimestamp": 1587241208
     },
     {
+      "id": "2",
       "author": "Diana Lee",
       "text": "Ordering products has never been easier.",
-      "timestamp": 1587465973,
-      "id": 2
+      "creationTimestamp": 1587465973
     },
     {
+      "id": "3",
       "author": "Emin Khateeb",
       "text": "I love the store and their products, they never fail to satisfy my needs. 👍",
-      "timestamp": 1587466050,
-      "id": 3
+      "creationTimestamp": 1587466050
     },
     {
+      "id": "4",
       "author": "Florian Gyger",
       "text": "Really enjoying the look and feel of the website. The guestbook is a very pleasant addition. Keep going! 💪",
-      "timestamp": 1587466694,
-      "id": 4
+      "creationTimestamp": 1587466694
     }
   ]
 }
