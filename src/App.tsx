@@ -15,7 +15,8 @@ import {
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GuestyConfig } from '.';
 import { NewEntry } from './Models/Entry';
 import { useEntries, useGuestbook } from './Utils/API';
@@ -25,10 +26,19 @@ interface Props {
 }
 
 export default ({ config }: Props) => {
+  const { t, i18n } = useTranslation();
   const { guestbook } = useGuestbook(config.apiKey);
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
   const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('guesty:submittedEntryId'));
+
+  useEffect(() => {
+    if (!guestbook) {
+      return;
+    }
+
+    i18n.changeLanguage(guestbook.languageTag);
+  }, [guestbook]);
 
   const onFinish = async (values: Store) => {
     const { author, text } = values as NewEntry;
@@ -49,27 +59,40 @@ export default ({ config }: Props) => {
       </PageHeader>
       <Layout.Content style={{ padding: '16px 24px' }}>
         {!submittedEntryId ? (
-          <Card title="Leave an entry" bodyStyle={{ paddingBottom: 0 }}>
+          <Card title={t('Leave an entry')} bodyStyle={{ paddingBottom: 0 }}>
             <Form layout="vertical" form={form} initialValues={{ author: '', text: '' }} onFinish={onFinish}>
-              <Form.Item name="author" label="Author" rules={[{ required: true, message: 'Please enter your name.' }]}>
-                <Input placeholder="e.g. Jon Doe" />
+              <Form.Item
+                name="author"
+                label={t('Author')}
+                rules={[{ required: true, message: t('Please enter your name.') }]}
+              >
+                <Input placeholder={t('e.g. Jon Doe')} />
               </Form.Item>
-              <Form.Item name="text" label="Text" rules={[{ required: true, message: 'Please enter your message.' }]}>
-                <Input.TextArea rows={3} placeholder="Hi from Jon Doe" />
+              <Form.Item
+                name="text"
+                label={t('Text')}
+                rules={[{ required: true, message: t('Please enter your message.') }]}
+              >
+                <Input.TextArea rows={3} placeholder={t('Hi from Jon Doe')} />
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  {t('Submit')}
                 </Button>
               </Form.Item>
             </Form>
           </Card>
         ) : (
-          <Alert message="Well done!" description="You successfully posted an entry." type="success" showIcon />
+          <Alert
+            message={t('Well done!')}
+            description={t('You successfully posted an entry.')}
+            type="success"
+            showIcon
+          />
         )}
         <List
           className="entry-list"
-          header={`${entries.length} entries`}
+          header={`${entries.length} ${t('Entries')}`}
           itemLayout="horizontal"
           dataSource={entries}
           loading={isLoading}
@@ -78,7 +101,7 @@ export default ({ config }: Props) => {
             let avatar = <Avatar src="http://placehold.it/64x64" />;
             if (entry.id.toString() === submittedEntryId?.toString()) {
               avatar = (
-                <Badge count="You" style={{ backgroundColor: '#52c41a', fontSize: 10, padding: '0 5px' }}>
+                <Badge count={t('You')} style={{ backgroundColor: '#52c41a', fontSize: 10, padding: '0 5px' }}>
                   {avatar}
                 </Badge>
               );
@@ -102,7 +125,7 @@ export default ({ config }: Props) => {
         />
       </Layout.Content>
       <Layout.Footer style={{ textAlign: 'center', padding: '16px 24px' }}>
-        Guesty &copy; {format(new Date(), 'yyyy')} by{' '}
+        Guesty &copy; {format(new Date(), 'yyyy')} {t('by')}{' '}
         <a href="https://floriangyger.ch" target="_blank" rel="nofollow noopener noreferrer">
           Florian Gyger
         </a>

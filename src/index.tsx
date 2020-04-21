@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'use-http';
 import App from './App';
+import './I18n';
 
 export interface GuestyConfig {
   container: Element | null;

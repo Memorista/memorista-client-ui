@@ -5,8 +5,10 @@
   "dependencies": {
     "antd": "4.1.4",
     "date-fns": "2.12.0",
+    "i18next": "19.4.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-i18next": "11.3.5",
     "use-http": "1.0.6"
   },
   "devDependencies": {
