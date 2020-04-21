@@ -2,9 +2,27 @@
   "entries": [
     {
       "id": 1,
-      "text": "Hello world!",
-      "author": "Testor",
+      "text": "When I enter the store, I always leave it happy.",
+      "author": "Jon Doe",
       "timestamp": 1587241208
+    },
+    {
+      "author": "Diana Lee",
+      "text": "Ordering products has never been easier.",
+      "timestamp": 1587465973,
+      "id": 2
+    },
+    {
+      "author": "Emin Khateeb",
+      "text": "I love the store and their products, they never fail to satisfy my needs. 👍",
+      "timestamp": 1587466050,
+      "id": 3
+    },
+    {
+      "author": "Florian Gyger",
+      "text": "Really enjoying the look and feel of the website. The guestbook is a very pleasant addition. Keep going! 💪",
+      "timestamp": 1587466694,
+      "id": 4
     }
   ]
 }
