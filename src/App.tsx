@@ -17,9 +17,9 @@ import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NewEntry } from './models/entry';
-import { useEntries, useGuestbook } from './utils/api';
 import { GuestyConfig } from './models/config';
+import { NewEntry } from './models/entry';
+import { useEntries, useGuestbook } from './utils/api-hooks';
 
 interface Props {
   config: GuestyConfig;
