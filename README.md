@@ -1,10 +1,12 @@
 # :books: Guesty Client UI
 
+> Offer guestbook functionality on any website in just a few steps.
+
 ## :star: Features
 
-- Show guestbook detais
-- View guestbook posts
-- Create guestbook post
+- Guestbook details
+- Lists entries
+- Entry creation form
 - Simple usage with embeddable code snippet
 
 ## :arrow_forward: Usage
