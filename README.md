@@ -23,3 +23,8 @@
   });
 </script>
 ```
+
+## :raising_hand: Contributors
+
+- [Florian Gyger](https://floriangyger.ch)
+- [Emin Khateeb](https://emin.ch)
