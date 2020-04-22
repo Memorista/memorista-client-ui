@@ -1,4 +1,4 @@
-import I18n, { Resource } from 'i18next';
+import i18n, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources: Resource = {
@@ -20,11 +20,11 @@ const resources: Resource = {
   },
 };
 
-I18n.use(initReactI18next).init({
+i18n.use(initReactI18next).init({
   resources,
   lng: 'en',
   keySeparator: false,
   interpolation: { escapeValue: false },
 });
 
-export default I18n;
+export default i18n;

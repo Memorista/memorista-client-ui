@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useFetch from 'use-http';
-import { Entry, NewEntry } from '../Models/Entry';
-import { Guestbook } from '../Models/Guestbook';
+import { Entry, NewEntry } from '../models/entry';
+import { Guestbook } from '../models/guestbook';
 
 export const useGuestbook = (apiKey: string) => {
   const [guestbook, setGuestbook] = useState<Guestbook>();

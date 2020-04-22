@@ -2,14 +2,9 @@ import 'antd/dist/antd.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'use-http';
-import App from './App';
-import './I18n';
-
-export interface GuestyConfig {
-  container: Element | null;
-  apiBaseUrl: string;
-  apiKey: string;
-}
+import { App } from './App';
+import './i18n';
+import { GuestyConfig } from './models/config';
 
 const defaultConfig: GuestyConfig = {
   container: document.getElementById('guesty-root'),

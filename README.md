@@ -17,7 +17,7 @@
 <div id="guesty-root"></div>
 <script crossorigin src="https://unpkg.com/@guesty/client-ui@1/guesty.min.js"></script>
 <script>
-  Guesty.init({
+  guesty.init({
     container: document.getElementById('guesty-root'),
     apiKey: 'YOUR_API_KEY',
   });

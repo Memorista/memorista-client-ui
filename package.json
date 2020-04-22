@@ -23,8 +23,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "parcel src/index.html --global Guesty --out-dir build --open",
-    "build": "parcel build src/index.tsx --global Guesty --out-file guesty.min.js --no-source-maps",
+    "start": "parcel src/index.html --global guesty --out-dir build --open",
+    "build": "parcel build src/index.tsx --global guesty --out-file guesty.min.js --no-source-maps",
     "prepublishOnly": "npm run build"
   }
 }

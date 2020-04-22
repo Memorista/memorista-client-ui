@@ -17,15 +17,15 @@ import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GuestyConfig } from '.';
-import { NewEntry } from './Models/Entry';
-import { useEntries, useGuestbook } from './Utils/API';
+import { NewEntry } from './models/entry';
+import { useEntries, useGuestbook } from './utils/api';
+import { GuestyConfig } from './models/config';
 
 interface Props {
   config: GuestyConfig;
 }
 
-export default ({ config }: Props) => {
+export const App = ({ config }: Props) => {
   const { t, i18n } = useTranslation();
   const { guestbook } = useGuestbook(config.apiKey);
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
