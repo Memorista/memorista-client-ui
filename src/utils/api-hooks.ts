@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useFetch from 'use-http';
 import { Entry, NewEntry } from '../models/entry';
 import { Guestbook } from '../models/guestbook';
+import { byCreationTimestamp } from './entry-sort-functions';
 
 export const useGuestbook = (apiKey: string) => {
   const [guestbook, setGuestbook] = useState<Guestbook>();
@@ -9,7 +10,7 @@ export const useGuestbook = (apiKey: string) => {
 
   useEffect(() => {
     const init = async () => {
-      const data = await request.get('/guestbooks');
+      const data: Guestbook[] = await request.get('/guestbooks');
 
       if (!response.ok || !data.length) {
         setGuestbook(undefined);
@@ -56,13 +57,13 @@ export const useEntries = (guestbookId: string | undefined) => {
         return;
       }
 
-      const data = await request.get(`/guestbooks/${guestbookId}/entries`);
+      const data: Entry[] = await request.get(`/guestbooks/${guestbookId}/entries`);
 
       if (!response.ok) {
         return;
       }
 
-      setEntries(data);
+      setEntries(data.sort(byCreationTimestamp));
     })();
   }, [request, response, guestbookId]);
 
