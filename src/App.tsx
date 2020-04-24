@@ -14,7 +14,7 @@ import {
   Typography,
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
+import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GuestyConfig } from './models/config';
