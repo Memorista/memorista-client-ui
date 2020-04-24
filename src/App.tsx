@@ -42,7 +42,7 @@ export const App = ({ config }: Props) => {
 
   const onFinish = async (values: Store) => {
     const { author, text } = values as NewEntry;
-    const createdEntry = await createEntry({ author, text, creationTimestamp: getUnixTime(new Date()) });
+    const createdEntry = await createEntry({ author, text });
 
     if (!createdEntry) {
       return;
