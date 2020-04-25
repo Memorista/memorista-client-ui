@@ -9,7 +9,7 @@ export const useGuestbook = (apiKey: string) => {
   const [request, response] = useFetch();
 
   useEffect(() => {
-    const init = async () => {
+    (async () => {
       const data: Guestbook[] = await request.get('/guestbooks');
 
       if (!response.ok || !data.length) {
@@ -19,9 +19,7 @@ export const useGuestbook = (apiKey: string) => {
       }
 
       setGuestbook(data[0]);
-    };
-
-    init();
+    })();
   }, [request, response, apiKey]);
 
   return {
