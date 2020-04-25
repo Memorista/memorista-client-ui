@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'use-http';
+import { CachePolicies, IncomingOptions, Provider } from 'use-http';
 import { App } from './App';
 import './i18n';
 import { GuestyConfig } from './models/config';
@@ -15,7 +15,8 @@ const defaultConfig: GuestyConfig = {
 export const init = (config: GuestyConfig) => {
   const mergedConfig = { ...defaultConfig, ...config };
 
-  const options = {
+  const options: IncomingOptions = {
+    cachePolicy: CachePolicies.NO_CACHE,
     headers: {
       Authorization: `Bearer ${mergedConfig.apiKey}`,
     },

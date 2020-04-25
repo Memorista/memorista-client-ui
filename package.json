@@ -7,19 +7,19 @@
     "dist"
   ],
   "dependencies": {
-    "antd": "4.1.4",
+    "antd": "4.1.5",
     "date-fns": "2.12.0",
     "i18next": "19.4.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-i18next": "11.3.5",
-    "use-http": "1.0.6"
+    "use-http": "1.0.9"
   },
   "devDependencies": {
     "@types/react": "16.9.34",
     "@types/react-dom": "16.9.6",
     "parcel-bundler": "1.12.4",
-    "prettier": "2.0.4",
+    "prettier": "2.0.5",
     "typescript": "3.8.3"
   },
   "scripts": {
