@@ -14,7 +14,7 @@ import {
   Typography,
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { format, formatDistanceToNow, fromUnixTime, getUnixTime } from 'date-fns';
+import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GuestyConfig } from './models/config';
@@ -42,7 +42,7 @@ export const App = ({ config }: Props) => {
 
   const onFinish = async (values: Store) => {
     const { author, text } = values as NewEntry;
-    const createdEntry = await createEntry({ author, text, creationTimestamp: getUnixTime(new Date()) });
+    const createdEntry = await createEntry({ author, text });
 
     if (!createdEntry) {
       return;
