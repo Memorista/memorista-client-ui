@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "parcel src/index.html --global guesty --out-dir build --open",
-    "build": "parcel build src/index.tsx --global guesty --out-file guesty.min.js --no-source-maps",
+    "build": "parcel build src/index.tsx --global guesty --out-file guesty.min.js --no-source-maps --experimental-scope-hoisting",
     "prepublishOnly": "npm run build"
   }
 }
