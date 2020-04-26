@@ -76,7 +76,7 @@ export const App = ({ config }: Props) => {
                 <Input.TextArea rows={3} placeholder={t('Hi from Jon Doe')} />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={isLoading}>
                   {t('Submit')}
                 </Button>
               </Form.Item>
