@@ -15,6 +15,7 @@
 
 ```html
 <div id="guesty-root"></div>
+<link rel="stylesheet" href="https://unpkg.com/@guesty/client-ui@1/guesty.min.css" />
 <script crossorigin src="https://unpkg.com/@guesty/client-ui@1/guesty.min.js"></script>
 <script>
   guesty.init({

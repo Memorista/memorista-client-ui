@@ -8,7 +8,7 @@ import { GuestyConfig } from './models/config';
 
 const defaultConfig: GuestyConfig = {
   container: document.getElementById('guesty-root'),
-  apiBaseUrl: 'http://localhost:3000',
+  apiBaseUrl: '',
   apiKey: '',
 };
 
