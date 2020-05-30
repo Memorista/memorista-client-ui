@@ -7,20 +7,20 @@
     "dist"
   ],
   "dependencies": {
-    "antd": "4.1.5",
-    "date-fns": "2.12.0",
-    "i18next": "19.4.3",
+    "antd": "4.2.5",
+    "date-fns": "2.14.0",
+    "i18next": "19.4.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-i18next": "11.3.5",
-    "use-http": "1.0.9"
+    "react-i18next": "11.5.0",
+    "use-http": "1.0.12"
   },
   "devDependencies": {
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.6",
+    "@types/react": "16.9.35",
+    "@types/react-dom": "16.9.8",
     "parcel-bundler": "1.12.4",
     "prettier": "2.0.5",
-    "typescript": "3.8.3"
+    "typescript": "3.9.3"
   },
   "scripts": {
     "start": "parcel src/index.html --global guesty --out-dir build --open",
