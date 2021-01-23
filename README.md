@@ -15,8 +15,8 @@
 
 ```html
 <div id="memorista-root"></div>
-<link rel="stylesheet" href="https://unpkg.com/@memorista/client-ui@1/memorista.min.css" />
-<script crossorigin src="https://unpkg.com/@memorista/client-ui@1/memorista.min.js"></script>
+<link rel="stylesheet" href="https://widget.memorista.io/v1/memorista.min.css" />
+<script crossorigin src="https://widget.memorista.io/v1/memorista.min.js"></script>
 <script>
   memorista.init({
     container: document.getElementById('memorista-root'),
