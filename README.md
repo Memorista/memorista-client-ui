@@ -1,4 +1,4 @@
-# :books: Guesty Client UI
+# :books: Memorista Client UI
 
 > Offer guestbook functionality on any website in just a few steps.
 
@@ -14,12 +14,12 @@
 ### Via code snippet
 
 ```html
-<div id="guesty-root"></div>
-<link rel="stylesheet" href="https://unpkg.com/@guesty/client-ui@1/guesty.min.css" />
-<script crossorigin src="https://unpkg.com/@guesty/client-ui@1/guesty.min.js"></script>
+<div id="memorista-root"></div>
+<link rel="stylesheet" href="https://unpkg.com/@memorista/client-ui@1/memorista.min.css" />
+<script crossorigin src="https://unpkg.com/@memorista/client-ui@1/memorista.min.js"></script>
 <script>
-  guesty.init({
-    container: document.getElementById('guesty-root'),
+  memorista.init({
+    container: document.getElementById('memorista-root'),
     apiKey: 'YOUR_API_KEY',
   });
 </script>

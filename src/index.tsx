@@ -4,15 +4,15 @@ import ReactDOM from 'react-dom';
 import { CachePolicies, IncomingOptions, Provider } from 'use-http';
 import { App } from './App';
 import './i18n';
-import { GuestyConfig } from './models/config';
+import { MemoristaConfig } from './models/config';
 
-const defaultConfig: GuestyConfig = {
-  container: document.getElementById('guesty-root'),
+const defaultConfig: MemoristaConfig = {
+  container: document.getElementById('memorista-root'),
   apiBaseUrl: '',
   apiKey: '',
 };
 
-export const init = (config: GuestyConfig) => {
+export const init = (config: MemoristaConfig) => {
   const mergedConfig = { ...defaultConfig, ...config };
 
   const options: IncomingOptions = {

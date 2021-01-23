@@ -14,7 +14,7 @@ export const useGuestbook = (apiKey: string) => {
 
       if (!response.ok || !data.length) {
         setGuestbook(undefined);
-        console.error('Guesty: Failed to fetch guestbook. Make sure your API key is correct.');
+        console.error('Memorista: Failed to fetch guestbook. Make sure your API key is correct.');
         return;
       }
 

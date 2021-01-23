@@ -17,12 +17,12 @@ import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GuestyConfig } from './models/config';
+import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 
 interface Props {
-  config: GuestyConfig;
+  config: MemoristaConfig;
 }
 
 export const App = ({ config }: Props) => {
@@ -30,7 +30,7 @@ export const App = ({ config }: Props) => {
   const { guestbook } = useGuestbook(config.apiKey);
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
-  const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('guesty:submittedEntryId'));
+  const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('memorista:submittedEntryId'));
 
   useEffect(() => {
     if (!guestbook) {
@@ -49,7 +49,7 @@ export const App = ({ config }: Props) => {
     }
 
     setSubmittedEntryId(createdEntry.id);
-    localStorage.setItem('guesty:submittedEntryId', createdEntry.id);
+    localStorage.setItem('memorista:submittedEntryId', createdEntry.id);
   };
 
   return (
@@ -125,7 +125,7 @@ export const App = ({ config }: Props) => {
         />
       </Layout.Content>
       <Layout.Footer style={{ textAlign: 'center', padding: '16px 24px' }}>
-        Guesty &copy; {format(new Date(), 'yyyy')} {t('by')}{' '}
+        Memorista &copy; {format(new Date(), 'yyyy')} {t('by')}{' '}
         <a href="https://floriangyger.ch" target="_blank" rel="nofollow noopener noreferrer">
           Florian Gyger
         </a>

@@ -1,8 +1,8 @@
 {
-  "name": "@guesty/client-ui",
+  "name": "@memorista/client-ui",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/guesty.min.js",
+  "main": "dist/memorista.min.js",
   "files": [
     "dist"
   ],
@@ -23,8 +23,8 @@
     "typescript": "4.0.2"
   },
   "scripts": {
-    "start": "parcel src/index.html --global guesty --out-dir build --open",
-    "build": "parcel build src/index.tsx --global guesty --out-file guesty.min.js --no-source-maps --experimental-scope-hoisting",
+    "start": "parcel src/index.html --global memorista --out-dir build --open",
+    "build": "parcel build src/index.tsx --global memorista --out-file memorista.min.js --no-source-maps --experimental-scope-hoisting",
     "prepublishOnly": "npm run build"
   }
 }
