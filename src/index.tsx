@@ -6,13 +6,13 @@ import { App } from './App';
 import './i18n';
 import { MemoristaConfig } from './models/config';
 
-const defaultConfig: MemoristaConfig = {
-  container: document.getElementById('memorista-root'),
-  apiBaseUrl: 'https://api.memorista.io/v1',
-  apiKey: '',
-};
-
 export const init = (config: MemoristaConfig) => {
+  const defaultConfig: MemoristaConfig = {
+    container: document.getElementById('memorista-root'),
+    apiBaseUrl: 'https://api.memorista.io/v1',
+    apiKey: '',
+  };
+
   const mergedConfig = { ...defaultConfig, ...config };
 
   const options: IncomingOptions = {
