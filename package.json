@@ -1,7 +1,7 @@
 {
   "name": "@memorista/client-ui",
-  "version": "1.0.1",
-  "main": "dist/memorista.min.js",
+  "version": "1.0.3",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "parcel src/index.html --global memorista --out-dir build --open",
-    "build": "parcel build src/index.tsx --global memorista --out-file memorista.min.js --experimental-scope-hoisting",
+    "build": "parcel build src/index.tsx --global memorista --out-dir dist",
     "prepublishOnly": "npm run build"
   }
 }
