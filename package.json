@@ -1,7 +1,6 @@
 {
   "name": "@memorista/client-ui",
   "version": "1.0.0",
-  "private": true,
   "main": "dist/memorista.min.js",
   "files": [
     "dist"
