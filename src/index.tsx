@@ -8,7 +8,7 @@ import { MemoristaConfig } from './models/config';
 
 const defaultConfig: MemoristaConfig = {
   container: document.getElementById('memorista-root'),
-  apiBaseUrl: '',
+  apiBaseUrl: 'https://api.memorista.io/v1',
   apiKey: '',
 };
 
