@@ -52,10 +52,14 @@ export const App = ({ config }: Props) => {
     localStorage.setItem('memorista:submittedEntryId', createdEntry.id);
   };
 
+  if (!guestbook) {
+    return null;
+  }
+
   return (
     <Layout style={{ backgroundColor: '#FFF' }}>
-      <PageHeader title={guestbook?.title}>
-        <Typography.Text>{guestbook?.description}</Typography.Text>
+      <PageHeader title={guestbook.title}>
+        <Typography.Text>{guestbook.description}</Typography.Text>
       </PageHeader>
       <Layout.Content style={{ padding: '16px 24px' }}>
         {!submittedEntryId ? (
