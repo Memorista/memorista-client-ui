@@ -13,9 +13,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - uses: FranzDiebold/github-env-vars-action@v2.1.0
       - run: npm ci
-      - run: npm --no-git-tag-version version $CI_ACTION_REF_NAME
+      - run: npm --no-git-tag-version version ${{ github.event.release.tag_name }}
       - run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
