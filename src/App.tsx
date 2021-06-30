@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
+import useSpeedLimit from './utils/use-speed-limit';
 
 interface Props {
   config: MemoristaConfig;
@@ -30,6 +31,7 @@ export const App = ({ config }: Props) => {
   const { guestbook } = useGuestbook(config.apiKey);
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
+  const isMinTimeElapsed = useSpeedLimit(2);
   const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('memorista:submittedEntryId'));
 
   useEffect(() => {
@@ -42,6 +44,12 @@ export const App = ({ config }: Props) => {
 
   const onFinish = async (values: Store) => {
     const { author, text } = values as NewEntry;
+
+    const isSpam = !!values.name || !isMinTimeElapsed;
+    if (isSpam) {
+      throw new Error('Possible spam bot detected. Form was not submitted.');
+    }
+
     const createdEntry = await createEntry({ author, text });
 
     if (!createdEntry) {
@@ -61,6 +69,14 @@ export const App = ({ config }: Props) => {
         {!submittedEntryId ? (
           <Card title={t('Leave an entry')} bodyStyle={{ paddingBottom: 0 }}>
             <Form layout="vertical" form={form} initialValues={{ author: '', text: '' }} onFinish={onFinish}>
+              <Form.Item
+                style={{ display: 'none' }}
+                name="name"
+                label={t('Please leave this field blank as it is used for spam protection.')}
+                rules={[{ required: false }]}
+              >
+                <Input />
+              </Form.Item>
               <Form.Item
                 name="author"
                 label={t('Author')}

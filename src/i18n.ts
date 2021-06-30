@@ -5,6 +5,8 @@ const resources: Resource = {
   de: {
     translation: {
       'Leave an entry': 'Eintrag erstellen',
+      'Please leave this field blank as it is used for spam protection.':
+        'Bitte dieses Feld leer lassen, da es als Spam-Schutz dient.',
       Author: 'Autor',
       'Please enter your name.': 'Bitte geben Sie Ihren Namen ein.',
       'e.g. Jon Doe': 'z.B. Max Mustermann',
