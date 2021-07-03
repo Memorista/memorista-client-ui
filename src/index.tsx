@@ -1,4 +1,5 @@
 import 'antd/dist/antd.css';
+import { format } from 'date-fns';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CachePolicies, IncomingOptions, Provider } from 'use-http';
@@ -28,4 +29,12 @@ export const init = (config: MemoristaConfig) => {
     </Provider>,
     mergedConfig.container
   );
+
+  const copyrightComment = document.createComment(
+    `Memorista (https://memorista.io) © ${format(
+      new Date(),
+      'yyyy'
+    )} by Florian Gyger (https://floriangyger.ch) & Emin Khateeb (https://emin.ch)`
+  );
+  mergedConfig.container?.appendChild(copyrightComment);
 };

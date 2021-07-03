@@ -144,16 +144,6 @@ export const App = ({ config }: Props) => {
           }}
         />
       </Layout.Content>
-      <Layout.Footer style={{ textAlign: 'center', padding: '16px 24px' }}>
-        Memorista &copy; {format(new Date(), 'yyyy')} {t('by')}{' '}
-        <a href="https://floriangyger.ch" target="_blank" rel="nofollow noopener noreferrer">
-          Florian Gyger
-        </a>
-        {` & `}
-        <a href="https://emin.ch" target="_blank" rel="nofollow noopener noreferrer">
-          Emin Khateeb
-        </a>
-      </Layout.Footer>
     </Layout>
   );
 };
