@@ -21,6 +21,7 @@ import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
+import Identicon, { IdenticonOptions } from 'identicon.js';
 
 interface Props {
   config: MemoristaConfig;
@@ -118,7 +119,13 @@ export const App = ({ config }: Props) => {
           loading={isLoading}
           renderItem={(entry) => {
             const date = fromUnixTime(entry.creationTimestamp);
-            let avatar = <Avatar src="http://placehold.it/64x64" />;
+
+            const avatarData = new Identicon(entry.id, {
+              size: 32,
+              format: 'svg',
+            }).toString();
+
+            let avatar = <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />;
             if (entry.id.toString() === submittedEntryId?.toString()) {
               avatar = (
                 <Badge count={t('You')} style={{ backgroundColor: '#52c41a', fontSize: 10, padding: '0 5px' }}>
