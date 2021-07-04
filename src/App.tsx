@@ -15,12 +15,13 @@ import {
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
+import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
 
 interface Props {
   config: MemoristaConfig;
@@ -32,7 +33,8 @@ export const App = ({ config }: Props) => {
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
   const isMinTimeElapsed = useSpeedLimit(2);
-  const [submittedEntryId, setSubmittedEntryId] = useState(localStorage.getItem('memorista:submittedEntryId'));
+  const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId } = useSubmittedEntriesStorage();
+  const authorName = useMemo(() => localStorage.getItem('memorista:authorName') || '', []);
 
   useEffect(() => {
     if (!guestbook) {
@@ -56,8 +58,8 @@ export const App = ({ config }: Props) => {
       return;
     }
 
-    setSubmittedEntryId(createdEntry.id);
-    localStorage.setItem('memorista:submittedEntryId', createdEntry.id);
+    localStorage.setItem('memorista:authorName', createdEntry.author);
+    pushSubmittedEntryId(createdEntry.id);
   };
 
   if (!guestbook) {
@@ -70,9 +72,9 @@ export const App = ({ config }: Props) => {
         <Typography.Text>{guestbook.description}</Typography.Text>
       </PageHeader>
       <Layout.Content style={{ padding: '16px 24px' }}>
-        {!submittedEntryId ? (
+        {!hasSubmissionInCurrentSession ? (
           <Card title={t('Leave an entry')} bodyStyle={{ paddingBottom: 0 }}>
-            <Form layout="vertical" form={form} initialValues={{ author: '', text: '' }} onFinish={onFinish}>
+            <Form layout="vertical" form={form} initialValues={{ author: authorName, text: '' }} onFinish={onFinish}>
               <Form.Item
                 style={{ display: 'none' }}
                 name="name"
@@ -119,7 +121,7 @@ export const App = ({ config }: Props) => {
           renderItem={(entry) => {
             const date = fromUnixTime(entry.creationTimestamp);
             let avatar = <Avatar src="http://placehold.it/64x64" />;
-            if (entry.id.toString() === submittedEntryId?.toString()) {
+            if (submittedEntryIds.includes(entry.id)) {
               avatar = (
                 <Badge count={t('You')} style={{ backgroundColor: '#52c41a', fontSize: 10, padding: '0 5px' }}>
                   {avatar}
