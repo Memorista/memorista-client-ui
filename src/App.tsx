@@ -14,14 +14,15 @@ import {
   Typography,
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
+import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
+import Identicon from 'identicon.js';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
-import Identicon, { IdenticonOptions } from 'identicon.js';
 
 interface Props {
   config: MemoristaConfig;
@@ -120,8 +121,9 @@ export const App = ({ config }: Props) => {
           renderItem={(entry) => {
             const date = fromUnixTime(entry.creationTimestamp);
 
-            const avatarData = new Identicon(entry.id, {
+            const avatarData = new Identicon(md5(entry.author), {
               size: 32,
+              margin: 0.25,
               format: 'svg',
             }).toString();
 
