@@ -17,7 +17,6 @@ const resources: Resource = {
       'You successfully posted an entry.': 'Sie haben erfolgreich einen Eintrag erstellt.',
       Entries: 'Einträge',
       You: 'Sie',
-      by: 'von',
     },
   },
 };
