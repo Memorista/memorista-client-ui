@@ -14,8 +14,10 @@ import {
   Typography,
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
+import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
-import React, { useEffect, useMemo } from 'react';
+import Identicon from 'identicon.js';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
@@ -120,7 +122,14 @@ export const App = ({ config }: Props) => {
           loading={isLoading}
           renderItem={(entry) => {
             const date = fromUnixTime(entry.creationTimestamp);
-            let avatar = <Avatar src="http://placehold.it/64x64" />;
+
+            const avatarData = new Identicon(md5(entry.author), {
+              size: 32,
+              margin: 0.25,
+              format: 'svg',
+            }).toString();
+
+            let avatar = <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />;
             if (submittedEntryIds.includes(entry.id)) {
               avatar = (
                 <Badge count={t('You')} style={{ backgroundColor: '#52c41a', fontSize: 10, padding: '0 5px' }}>
