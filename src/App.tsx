@@ -104,8 +104,8 @@ export const App = ({ config }: Props) => {
           </Card>
         ) : (
           <Alert
-            message={t('Well done!')}
-            description={t('You successfully posted an entry.')}
+            message={t('Entry created')}
+            description={t('Your entry has been successfully saved.')}
             type="success"
             showIcon
           />
