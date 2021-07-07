@@ -1,29 +1,29 @@
 {
   "name": "@memorista/client-ui",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "dependencies": {
-    "antd": "4.10.3",
+    "antd": "4.16.6",
     "blueimp-md5": "2.18.0",
-    "date-fns": "2.16.1",
-    "i18next": "19.8.4",
+    "date-fns": "2.22.1",
+    "i18next": "20.3.2",
     "identicon.js": "2.3.3",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-i18next": "11.8.5",
-    "use-http": "1.0.16"
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-i18next": "11.11.1",
+    "use-http": "1.0.21"
   },
   "devDependencies": {
     "@types/blueimp-md5": "2.18.0",
     "@types/identicon.js": "2.3.0",
-    "@types/react": "17.0.0",
-    "@types/react-dom": "17.0.0",
-    "parcel-bundler": "1.12.3",
-    "prettier": "2.2.1",
-    "typescript": "4.1.3"
+    "@types/react": "17.0.14",
+    "@types/react-dom": "17.0.9",
+    "parcel-bundler": "1.12.5",
+    "prettier": "2.3.2",
+    "typescript": "4.3.5"
   },
   "scripts": {
     "start": "parcel src/index.html --global memorista --out-dir build --open",
