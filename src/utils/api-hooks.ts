@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'preact/hooks';
 import useFetch from 'use-http';
 import { Entry, NewEntry } from '../models/entry';
 import { Guestbook } from '../models/guestbook';

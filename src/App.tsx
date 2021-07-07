@@ -17,21 +17,21 @@ import { Store } from 'antd/lib/form/interface';
 import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import Identicon from 'identicon.js';
-import React, { useEffect, useMemo, useState } from 'react';
+import { FunctionComponent } from 'preact';
+import { useEffect, useMemo } from 'preact/hooks';
 import { useTranslation } from 'react-i18next';
-import { MemoristaConfig } from './models/config';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
 import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
 
-interface Props {
-  config: MemoristaConfig;
-}
+type Props = {
+  apiKey: string;
+};
 
-export const App = ({ config }: Props) => {
+export const App: FunctionComponent<Props> = ({ apiKey }) => {
   const { t, i18n } = useTranslation();
-  const { guestbook } = useGuestbook(config.apiKey);
+  const { guestbook } = useGuestbook(apiKey);
   const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
   const [form] = Form.useForm();
   const isMinTimeElapsed = useSpeedLimit(2);

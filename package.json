@@ -5,29 +5,42 @@
   "files": [
     "dist"
   ],
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
+  },
+  "targets": {
+    "browser": {
+      "context": "browser"
+    }
+  },
   "dependencies": {
     "antd": "4.16.6",
     "blueimp-md5": "2.18.0",
     "date-fns": "2.22.1",
     "i18next": "20.3.2",
     "identicon.js": "2.3.3",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "preact": "10.5.14",
+    "preact-custom-element": "4.2.1",
     "react-i18next": "11.11.1",
     "use-http": "1.0.21"
   },
   "devDependencies": {
+    "@babel/preset-react": "7.14.5",
+    "@parcel/babel-plugin-transform-runtime": "2.0.0-nightly.2377",
+    "@parcel/babel-preset-env": "2.0.0-nightly.755",
+    "@parcel/validator-typescript": "2.0.0-nightly.755",
     "@types/blueimp-md5": "2.18.0",
     "@types/identicon.js": "2.3.0",
+    "@types/preact-custom-element": "4.0.1",
     "@types/react": "17.0.14",
-    "@types/react-dom": "17.0.9",
-    "parcel-bundler": "1.12.5",
+    "parcel": "2.0.0-beta.3.1",
     "prettier": "2.3.2",
     "typescript": "4.3.5"
   },
   "scripts": {
-    "start": "parcel src/index.html --global memorista --out-dir build --open",
-    "build": "parcel build src/index.tsx --global memorista --out-dir dist",
+    "start": "parcel serve src/index.html --target browser --dist-dir build --open",
+    "build": "parcel build src/index.tsx --target browser --no-source-maps",
     "prepublishOnly": "npm run build"
   }
 }

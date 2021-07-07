@@ -6,14 +6,10 @@
     <title>Memorista Sample Page</title>
   </head>
   <body>
-    <div id="memorista-root"></div>
-    <script src="./index.tsx"></script>
-    <script>
-      memorista.init({
-        container: document.getElementById('memorista-root'),
-        apiBaseUrl: 'https://x1r5cxtl6d.execute-api.eu-central-1.amazonaws.com/dev',
-        apiKey: 'ed7fdbfc-27e2-4955-92f4-6b7ec4b5f5e2',
-      });
-    </script>
+    <script src="./index.tsx" type="module"></script>
+    <x-memorista
+      api-base-url="https://x1r5cxtl6d.execute-api.eu-central-1.amazonaws.com/dev"
+      api-key="ed7fdbfc-27e2-4955-92f4-6b7ec4b5f5e2"
+    />
   </body>
 </html>
