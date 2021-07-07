@@ -12,17 +12,34 @@ module.exports = {
       'react-dom': 'preact/compat',
     },
   },
-  devServer: { contentBase: path.resolve(__dirname, './dist') },
+  devServer: {
+    contentBase: path.resolve(__dirname, './dist'),
+    open: true,
+  },
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
       {
-        test: /\.(css)$/,
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: ['ts-loader'],
+      },
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
+      {
+        test: /\.(css|scss)$/,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        use: ['file-loader'],
       },
     ],
   },
