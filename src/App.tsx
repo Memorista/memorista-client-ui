@@ -23,9 +23,10 @@ import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import Identicon from 'identicon.js';
-import { Fragment, FunctionComponent } from 'preact';
+import { FunctionComponent } from 'preact';
 import { useEffect, useMemo } from 'preact/hooks';
 import { useTranslation } from 'react-i18next';
+import { LineBreakText } from './components/LineBreakText';
 import { SkeletonEntry } from './components/SkeletonEntry';
 import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
@@ -192,12 +193,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                     )}
                   </Text>
                   <Text fontSize="sm">
-                    {entry.text.split('\n').map((item, index) => (
-                      <Fragment key={index}>
-                        {item}
-                        <br />
-                      </Fragment>
-                    ))}
+                    <LineBreakText>{entry.text}</LineBreakText>
                   </Text>
                 </Box>
               </Flex>
