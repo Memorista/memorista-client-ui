@@ -1,7 +1,7 @@
-import 'antd/dist/antd.css';
+import { ChakraProvider } from '@chakra-ui/react';
 import { FunctionComponent } from 'preact';
 import register from 'preact-custom-element';
-import { CachePolicies, IncomingOptions, Provider } from 'use-http';
+import { CachePolicies, IncomingOptions, Provider as HttpProvider } from 'use-http';
 import { App } from './App';
 import './i18n';
 
@@ -19,10 +19,12 @@ const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memoris
   };
 
   return (
-    <Provider url={apiBaseUrl} options={options}>
-      <App apiKey={apiKey} />
-    </Provider>
+    <HttpProvider url={apiBaseUrl} options={options}>
+      <ChakraProvider>
+        <App apiKey={apiKey} />
+      </ChakraProvider>
+    </HttpProvider>
   );
 };
 
-customElements.get('x-memorista') || register(Memorista, 'x-memorista', ['api-base-url', 'api-key']);
+register(Memorista, 'x-memorista', ['api-base-url', 'api-key']);

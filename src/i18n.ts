@@ -13,7 +13,6 @@ const resources: Resource = {
       'Please enter your message.': 'Bitte geben Sie Ihre Nachricht ein.',
       'Hi from Jon Doe': 'Hallo von Max Mustermann',
       Submit: 'Abschicken',
-      'Entry created': 'Eintrag erstellt',
       'Your entry has been successfully saved.': 'Ihr Eintrag wurde erfolgreich gespeichert.',
       Entries: 'Einträge',
       You: 'Sie',
