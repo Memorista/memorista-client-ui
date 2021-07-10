@@ -92,27 +92,36 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
       <Divider />
 
-      <VStack alignItems="flex-start" width="100%">
-        {!hasSubmissionInCurrentSession ? (
-          <Formik
-            initialValues={initialValues}
-            validateOnMount={true}
-            validate={(values) => {
-              const errors: Partial<FormValues> = {};
+      {!hasSubmissionInCurrentSession ? (
+        <Formik
+          initialValues={initialValues}
+          validateOnMount={true}
+          validate={(values) => {
+            const errors: Partial<FormValues> = {};
 
-              if (!values.author) {
-                errors.author = t('Please enter your name.');
-              }
-              if (!values.text) {
-                errors.text = t('Please enter your message.');
-              }
+            if (!values.author) {
+              errors.author = t('Please enter your name.');
+            }
+            if (!values.text) {
+              errors.text = t('Please enter your message.');
+            }
 
-              return errors;
-            }}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting, errors, touched, isValid }) => (
-              <Form style={{ width: '100%' }}>
+            return errors;
+          }}
+          onSubmit={onSubmit}
+        >
+          {({ isSubmitting, errors, touched, isValid }) => (
+            <Form style={{ width: '100%' }}>
+              <VStack alignItems="flex-start" width="100%" spacing="4">
+                <Field name="author">
+                  {({ field }: FieldProps) => (
+                    <FormControl isInvalid={!!(errors.author && touched.author)}>
+                      <FormLabel htmlFor="author">{t('Author')}</FormLabel>
+                      <Input {...field} id="author" placeholder={t('e.g. Jon Doe')} disabled={isLoading} />
+                      <FormErrorMessage>{errors.author}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
                 <Field name="name">
                   {({ field }: FieldProps) => (
                     <FormControl isInvalid={!!(errors.name && touched.name)} style={{ display: 'none' }}>
@@ -121,15 +130,6 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                       </FormLabel>
                       <Input {...field} id="name" />
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-                <Field name="author">
-                  {({ field }: FieldProps) => (
-                    <FormControl isInvalid={!!(errors.author && touched.author)}>
-                      <FormLabel htmlFor="author">{t('Author')}</FormLabel>
-                      <Input {...field} id="author" placeholder={t('e.g. Jon Doe')} disabled={isLoading} />
-                      <FormErrorMessage>{errors.author}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -145,16 +145,16 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                 <Button mt={4} colorScheme="teal" isLoading={isSubmitting} disabled={!isValid} type="submit">
                   {t('Submit')}
                 </Button>
-              </Form>
-            )}
-          </Formik>
-        ) : (
-          <Alert status="success">
-            <AlertIcon />
-            {t('Your entry has been successfully saved.')}
-          </Alert>
-        )}
-      </VStack>
+              </VStack>
+            </Form>
+          )}
+        </Formik>
+      ) : (
+        <Alert status="success">
+          <AlertIcon />
+          {t('Your entry has been successfully saved.')}
+        </Alert>
+      )}
 
       <Divider />
 
