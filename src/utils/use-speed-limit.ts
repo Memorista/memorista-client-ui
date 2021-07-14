@@ -1,11 +1,11 @@
-import React from 'react';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 const useSpeedLimit = (minTimeSeconds: number) => {
-  const timeoutHandle = React.useRef<number>();
-  const [minTimeElapsed, setMinTimeElapsed] = React.useState<boolean>(false);
+  const timeoutHandle = useRef<number>();
+  const [minTimeElapsed, setMinTimeElapsed] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    timeoutHandle.current = setTimeout(() => setMinTimeElapsed(true), minTimeSeconds * 1000);
+  useEffect(() => {
+    timeoutHandle.current = window.setTimeout(() => setMinTimeElapsed(true), minTimeSeconds * 1000);
 
     return () => {
       if (timeoutHandle.current) {
