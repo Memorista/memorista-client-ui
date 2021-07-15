@@ -14,15 +14,8 @@
 ### Via code snippet
 
 ```html
-<div id="memorista-root"></div>
-<link rel="stylesheet" href="https://unpkg.com/@memorista/client-ui@1.0.0/dist/memorista.min.css" />
-<script crossorigin src="https://unpkg.com/@memorista/client-ui@1.0.0/dist/memorista.min.js"></script>
-<script>
-  memorista.init({
-    container: document.getElementById('memorista-root'),
-    apiKey: 'YOUR_API_KEY',
-  });
-</script>
+<script crossorigin src="https://unpkg.com/@memorista/client-ui@2/dist/index.bundle.js"></script>
+<x-memorista api-key="ed7fdbfc-27e2-4955-92f4-6b7ec4b5f5e2" />
 ```
 
 ## :raising_hand: Contributors
