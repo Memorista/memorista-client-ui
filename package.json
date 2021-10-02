@@ -1,6 +1,7 @@
 {
   "name": "@memorista/client-ui",
   "version": "1.0.0",
+  "license": "MIT",
   "main": "dist/index.js",
   "files": [
     "dist"
