@@ -32,6 +32,7 @@ import { NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
 import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
+import { v4 as uuid } from 'uuid';
 
 type Props = {
   apiKey: string;
@@ -45,11 +46,20 @@ type FormValues = {
 
 export const App: FunctionComponent<Props> = ({ apiKey }) => {
   const { t, i18n } = useTranslation();
+  const authorName = useMemo(() => localStorage.getItem('memorista:authorName') || '', []);
+  const authorToken = useMemo(() => {
+    const token = localStorage.getItem('memorista:authorToken');
+    if (token) return token;
+
+    const newAuthorToken = uuid();
+    localStorage.setItem('memorista:authorToken', newAuthorToken);
+
+    return newAuthorToken;
+  }, []);
   const { guestbook } = useGuestbook(apiKey);
-  const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
+  const { entries, createEntry, isLoading } = useEntries(guestbook?.id, authorToken);
   const isMinTimeElapsed = useSpeedLimit(2);
   const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId } = useSubmittedEntriesStorage();
-  const authorName = useMemo(() => localStorage.getItem('memorista:authorName') || '', []);
 
   useEffect(() => {
     if (!guestbook) {
@@ -64,7 +74,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
     const isSpam = !!values.name || !isMinTimeElapsed;
     if (isSpam) {
-      throw new Error('Possible spam bot detected. Form was not submitted.');
+      throw new Error('Memorista: Possible spam bot detected. Form was not submitted.');
     }
 
     const createdEntry = await createEntry({ author, text });

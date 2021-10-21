@@ -29,23 +29,36 @@ export const useGuestbook = (apiKey: string) => {
   };
 };
 
-export const useEntries = (guestbookId: string | undefined) => {
+export const useEntries = (guestbookId: string | undefined, authorToken: string) => {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [request, response] = useFetch();
 
   const createEntry = async (entry: NewEntry) => {
     if (!guestbookId) {
-      return null;
+      throw new Error('Memorista: No guestbook ID provided.');
     }
 
     const newEntry: Entry = await request.post(`/guestbooks/${guestbookId}/entries`, entry);
-
     if (!response.ok) {
-      return null;
+      throw new Error('Memorista: Failed to create entry.');
     }
 
     setEntries([newEntry, ...entries]);
     return newEntry;
+  };
+
+  const updateEntry = async (entryId: Entry['id'], updates: Partial<NewEntry>) => {
+    if (!guestbookId) {
+      throw new Error('Memorista: No guestbook ID provided.');
+    }
+
+    const updatedEntry: Entry = await request.patch(`/guestbooks/${guestbookId}/entries/${entryId}`, updates);
+    if (!response.ok) {
+      throw new Error('Memorista: Failed to update entry.');
+    }
+
+    setEntries(entries.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry)));
+    return updatedEntry;
   };
 
   useEffect(() => {
@@ -56,9 +69,8 @@ export const useEntries = (guestbookId: string | undefined) => {
       }
 
       const data: Entry[] = await request.get(`/guestbooks/${guestbookId}/entries`);
-
       if (!response.ok) {
-        return;
+        throw new Error('Memorista: Failed to fetch entries.');
       }
 
       setEntries(data.sort(byCreationTimestamp));
@@ -68,6 +80,7 @@ export const useEntries = (guestbookId: string | undefined) => {
   return {
     entries,
     createEntry,
+    updateEntry,
     isLoading: request.loading,
     error: request.error,
   };

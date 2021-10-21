@@ -19,7 +19,8 @@
     "preact": "10.5.14",
     "preact-custom-element": "4.2.1",
     "react-i18next": "11.11.1",
-    "use-http": "1.0.21"
+    "use-http": "1.0.21",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@babel/core": "7.14.6",
@@ -30,6 +31,7 @@
     "@types/identicon.js": "2.3.1",
     "@types/preact-custom-element": "4.0.1",
     "@types/react": "17.0.14",
+    "@types/uuid": "8.3.1",
     "babel-loader": "8.2.2",
     "dotenv-webpack": "7.0.3",
     "file-loader": "6.2.0",
