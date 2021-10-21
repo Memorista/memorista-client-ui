@@ -84,7 +84,7 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
   );
 };
 
-function EditableControls() {
+const EditableControls: VFC = () => {
   const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps } = useEditableControls();
 
   return isEditing ? (
@@ -97,4 +97,4 @@ function EditableControls() {
       <IconButton size="xs" icon={(<EditIcon />) as ReactElement} {...(getEditButtonProps() as IconButtonProps)} />
     </Flex>
   );
-}
+};
