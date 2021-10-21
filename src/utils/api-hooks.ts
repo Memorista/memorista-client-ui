@@ -31,7 +31,7 @@ export const useGuestbook = (apiKey: string) => {
 
 export const useEntries = (guestbookId: string | undefined, authorToken: string) => {
   const [entries, setEntries] = useState<Entry[]>([]);
-  const [request, response] = useFetch();
+  const [request, response] = useFetch({ headers: { 'X-Author-Token': authorToken } });
 
   const createEntry = async (entry: NewEntry) => {
     if (!guestbookId) {
