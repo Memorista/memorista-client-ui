@@ -1,41 +1,28 @@
 import {
   Alert,
   AlertIcon,
-  Avatar,
-  Badge,
-  Box,
   Button,
   Divider,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
   Input,
-  Tag,
-  TagLabel,
   Text,
   Textarea,
-  Tooltip,
   VStack,
-  Editable,
-  EditableInput,
-  EditablePreview,
 } from '@chakra-ui/react';
-import md5 from 'blueimp-md5';
-import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import Identicon from 'identicon.js';
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo } from 'preact/hooks';
 import { useTranslation } from 'react-i18next';
-import { LineBreakText } from './components/LineBreakText';
+import { v4 as uuid } from 'uuid';
+import { Entry } from './components/Entry';
 import { SkeletonEntry } from './components/SkeletonEntry';
-import { Entry, NewEntry } from './models/entry';
+import { Entry as EntryModel, NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
 import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
-import { v4 as uuid } from 'uuid';
 
 type Props = {
   apiKey: string;
@@ -90,7 +77,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     pushSubmittedEntryId(createdEntry.id);
   };
 
-  const onUpdateField = (entryId: Entry['id'], field: keyof FormValues) => (value: string) => {
+  const onUpdateField = (entryId: EntryModel['id']) => (field: keyof NewEntry, value: string) => {
     if (field === 'author') {
       localStorage.setItem('memorista:authorName', value);
     }
@@ -187,63 +174,14 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
             <SkeletonEntry />
           </>
         ) : (
-          entries.map((entry) => {
-            const date = fromUnixTime(entry.creationTimestamp);
-
-            const avatarData = new Identicon(md5(entry.author), {
-              size: 32,
-              margin: 0.25,
-              format: 'svg',
-            }).toString();
-
-            const isAuthor = submittedEntryIds.includes(entry.id);
-
-            return (
-              <Flex key={entry.id}>
-                <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />
-                <Box ml="3">
-                  <Text fontWeight="bold">
-                    {isAuthor ? (
-                      <Editable
-                        defaultValue={entry.author}
-                        display="inline-block"
-                        onSubmit={onUpdateField(entry.id, 'author')}
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    ) : (
-                      entry.author
-                    )}
-                    <Tooltip label={formatDistanceToNow(date, { addSuffix: true })}>
-                      <Tag size="sm" mx="1" verticalAlign="middle">
-                        <TagLabel>{format(date, 'dd.MM.yyyy - HH:mm')}</TagLabel>
-                      </Tag>
-                    </Tooltip>
-                    {isAuthor && (
-                      <Badge ml="1" colorScheme="green">
-                        {t('You')}
-                      </Badge>
-                    )}
-                  </Text>
-                  <Text fontSize="sm">
-                    {isAuthor ? (
-                      <Editable
-                        defaultValue={entry.text}
-                        display="inline-block"
-                        onSubmit={onUpdateField(entry.id, 'text')}
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    ) : (
-                      <LineBreakText>{entry.text}</LineBreakText>
-                    )}
-                  </Text>
-                </Box>
-              </Flex>
-            );
-          })
+          entries.map((entry) => (
+            <Entry
+              key={entry.id}
+              entry={entry}
+              submittedEntryIds={submittedEntryIds}
+              onUpdate={onUpdateField(entry.id)}
+            />
+          ))
         )}
       </VStack>
     </VStack>
