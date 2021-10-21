@@ -18,6 +18,9 @@ import {
   Textarea,
   Tooltip,
   VStack,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
@@ -28,7 +31,7 @@ import { useEffect, useMemo } from 'preact/hooks';
 import { useTranslation } from 'react-i18next';
 import { LineBreakText } from './components/LineBreakText';
 import { SkeletonEntry } from './components/SkeletonEntry';
-import { NewEntry } from './models/entry';
+import { Entry, NewEntry } from './models/entry';
 import { useEntries, useGuestbook } from './utils/api-hooks';
 import useSpeedLimit from './utils/use-speed-limit';
 import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
@@ -57,7 +60,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     return newAuthorToken;
   }, []);
   const { guestbook } = useGuestbook(apiKey);
-  const { entries, createEntry, isLoading } = useEntries(guestbook?.id, authorToken);
+  const { entries, createEntry, updateEntry, isLoading } = useEntries(guestbook?.id, authorToken);
   const isMinTimeElapsed = useSpeedLimit(2);
   const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId } = useSubmittedEntriesStorage();
 
@@ -85,6 +88,14 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
     localStorage.setItem('memorista:authorName', createdEntry.author);
     pushSubmittedEntryId(createdEntry.id);
+  };
+
+  const onUpdateField = (entryId: Entry['id'], field: keyof FormValues) => (value: string) => {
+    if (field === 'author') {
+      localStorage.setItem('memorista:authorName', value);
+    }
+
+    updateEntry(entryId, { [field]: value });
   };
 
   if (!guestbook) {
@@ -185,25 +196,49 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
               format: 'svg',
             }).toString();
 
+            const isAuthor = submittedEntryIds.includes(entry.id);
+
             return (
               <Flex key={entry.id}>
                 <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />
                 <Box ml="3">
                   <Text fontWeight="bold">
-                    {entry.author}
+                    {isAuthor ? (
+                      <Editable
+                        defaultValue={entry.author}
+                        display="inline-block"
+                        onSubmit={onUpdateField(entry.id, 'author')}
+                      >
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                    ) : (
+                      entry.author
+                    )}
                     <Tooltip label={formatDistanceToNow(date, { addSuffix: true })}>
                       <Tag size="sm" mx="1" verticalAlign="middle">
                         <TagLabel>{format(date, 'dd.MM.yyyy - HH:mm')}</TagLabel>
                       </Tag>
                     </Tooltip>
-                    {submittedEntryIds.includes(entry.id) && (
+                    {isAuthor && (
                       <Badge ml="1" colorScheme="green">
                         {t('You')}
                       </Badge>
                     )}
                   </Text>
                   <Text fontSize="sm">
-                    <LineBreakText>{entry.text}</LineBreakText>
+                    {isAuthor ? (
+                      <Editable
+                        defaultValue={entry.text}
+                        display="inline-block"
+                        onSubmit={onUpdateField(entry.id, 'text')}
+                      >
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                    ) : (
+                      <LineBreakText>{entry.text}</LineBreakText>
+                    )}
                   </Text>
                 </Box>
               </Flex>
