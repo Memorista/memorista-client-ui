@@ -47,7 +47,7 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
   return (
     <Editable
       display="flex"
-      defaultValue={entry.text}
+      value={entry.text}
       onSubmit={onUpdateField('text')}
       isDisabled={!isAuthor}
       isPreviewFocusable={false}
