@@ -1,28 +1,28 @@
+import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Badge,
   Box,
+  ButtonGroup,
   Editable,
   EditableInput,
   EditablePreview,
   Flex,
+  IconButton,
+  IconButtonProps,
   Tag,
   TagLabel,
   Text,
   Tooltip,
   useEditableControls,
-  ButtonGroup,
-  IconButton,
-  IconButtonProps,
 } from '@chakra-ui/react';
 import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import Identicon from 'identicon.js';
-import { ReactElement, VFC } from 'react';
+import { ReactElement, useMemo, VFC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Entry as EntryModel, NewEntry } from '../models/entry';
 import { LineBreakText } from './LineBreakText';
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 
 interface EntryProps {
   entry: EntryModel;
@@ -32,22 +32,27 @@ interface EntryProps {
 
 export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) => {
   const { t } = useTranslation();
-  const date = fromUnixTime(entry.creationTimestamp);
+  const date = useMemo(() => fromUnixTime(entry.creationTimestamp), [entry.creationTimestamp]);
 
-  const avatarData = new Identicon(md5(entry.author), {
-    size: 32,
-    margin: 0.25,
-    format: 'svg',
-  }).toString();
+  const avatarData = useMemo(
+    () =>
+      new Identicon(md5(entry.author), {
+        size: 32,
+        margin: 0.25,
+        format: 'svg',
+      }).toString(),
+    [entry.author]
+  );
 
-  const isAuthor = submittedEntryIds.includes(entry.id);
+  const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), []);
 
   const onUpdateField = (field: keyof NewEntry) => (value: string) => onUpdate(field, value);
 
   return (
     <Editable
+      key={entry.text}
+      defaultValue={entry.text}
       display="flex"
-      value={entry.text}
       onSubmit={onUpdateField('text')}
       isDisabled={!isAuthor}
       isPreviewFocusable={false}
