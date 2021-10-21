@@ -10,7 +10,7 @@ type Props = {
   apiKey?: string;
 };
 
-const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memorista.io/v1', apiKey = '' }) => {
+const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memorista.io/v2', apiKey = '' }) => {
   const options: IncomingOptions = {
     cachePolicy: CachePolicies.NO_CACHE,
     headers: {
