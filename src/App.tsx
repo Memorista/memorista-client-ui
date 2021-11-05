@@ -21,10 +21,10 @@ import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import { Entry } from './components/Entry';
 import { SkeletonEntry } from './components/SkeletonEntry';
+import { useEntries, useGuestbook } from './hooks/api';
+import { useSpeedLimit } from './hooks/speed-limit';
+import { useSubmittedEntriesStorage } from './hooks/submitted-entries-storage';
 import { Entry as EntryModel, NewEntry } from './models/entry';
-import { useEntries, useGuestbook } from './utils/api-hooks';
-import useSpeedLimit from './utils/use-speed-limit';
-import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
 
 type Props = {
   apiKey: string;
@@ -61,7 +61,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     i18n.changeLanguage(guestbook.languageTag);
   }, [guestbook]);
 
-  const onSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     const { author, text } = values as NewEntry;
 
     const isSpam = !!values.name || !isMinTimeElapsed;
@@ -78,7 +78,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     pushSubmittedEntryId(createdEntry.id);
   };
 
-  const onUpdate = (entryId: EntryModel['id']) => (updates: Partial<NewEntry>) => {
+  const handleUpdate = (entryId: EntryModel['id']) => (updates: Partial<NewEntry>) => {
     if (updates.author) {
       localStorage.setItem('memorista:authorName', updates.author);
       setAuthorName(updates.author);
@@ -119,7 +119,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
             return errors;
           }}
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit}
         >
           {({ isSubmitting, errors, touched, isValid }) => (
             <Form style={{ width: '100%' }}>
@@ -185,7 +185,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                 key={entryHash}
                 entry={entry}
                 submittedEntryIds={submittedEntryIds}
-                onUpdate={onUpdate(entry.id)}
+                onUpdate={handleUpdate(entry.id)}
               />
             );
           })

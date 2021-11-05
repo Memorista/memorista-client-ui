@@ -5,8 +5,6 @@ import {
   Box,
   ButtonGroup,
   Flex,
-  FormControl,
-  FormErrorMessage,
   IconButton,
   Input,
   Tag,
@@ -23,13 +21,13 @@ import { useTranslation } from 'react-i18next';
 import { Entry as EntryModel, NewEntry } from '../models/entry';
 import { LineBreakText } from './LineBreakText';
 
-interface EntryProps {
+interface Props {
   entry: EntryModel;
   submittedEntryIds: Array<EntryModel['id']>;
   onUpdate: (updates: Partial<NewEntry>) => void;
 }
 
-export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) => {
+export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate }) => {
   const { t } = useTranslation();
   const date = useMemo(() => fromUnixTime(entry.creationTimestamp), [entry.creationTimestamp]);
   const [updatedAuthor, setUpdatedAuthor] = useState(entry.author);
@@ -47,7 +45,7 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
     [entry.author]
   );
 
-  const onUpdateField = () => {
+  const handleUpdate = () => {
     const updates: Partial<NewEntry> = {};
     if (entry.author !== updatedAuthor) updates.author = updatedAuthor;
     if (entry.text !== updatedText) updates.text = updatedText;
@@ -55,14 +53,14 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
     setIsEditing(false);
   };
 
-  const onCancelEdit = () => {
+  const handleCancelEdit = () => {
     setUpdatedAuthor(entry.author);
     setUpdatedText(entry.text);
     setIsEditing(false);
   };
 
   return (
-    <Box display="flex" flexDirection="row" width="100%">
+    <Flex width="100%">
       <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />
       <Box ml="3" flex="1">
         <Text fontWeight="bold" display="flex" mb="1" alignItems="center">
@@ -92,10 +90,14 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
                 <IconButton
                   icon={(<CheckIcon />) as ReactElement}
                   aria-label={t('Save')}
-                  onClick={onUpdateField}
+                  onClick={handleUpdate}
                   disabled={!updatedAuthor || !updatedText}
                 />
-                <IconButton icon={(<CloseIcon />) as ReactElement} aria-label={t('Cancel')} onClick={onCancelEdit} />
+                <IconButton
+                  icon={(<CloseIcon />) as ReactElement}
+                  aria-label={t('Cancel')}
+                  onClick={handleCancelEdit}
+                />
               </ButtonGroup>
             ) : (
               <Flex display="inline-flex" ml="2">
@@ -121,6 +123,6 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
           )}
         </Text>
       </Box>
-    </Box>
+    </Flex>
   );
 };

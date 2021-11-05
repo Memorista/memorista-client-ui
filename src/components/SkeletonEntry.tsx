@@ -1,6 +1,7 @@
 import { Box, Flex, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
+import { VFC } from 'react';
 
-export const SkeletonEntry = () => (
+export const SkeletonEntry: VFC = () => (
   <Flex width="100%">
     <SkeletonCircle size="10" />
     <Box ml="3">

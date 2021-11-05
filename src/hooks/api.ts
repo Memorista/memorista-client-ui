@@ -2,7 +2,6 @@ import { useEffect, useState } from 'preact/hooks';
 import useFetch from 'use-http';
 import { Entry, NewEntry } from '../models/entry';
 import { Guestbook } from '../models/guestbook';
-import { byCreationTimestamp } from './entry-sort-functions';
 
 export const useGuestbook = (apiKey: string) => {
   const [guestbook, setGuestbook] = useState<Guestbook>();
@@ -73,7 +72,7 @@ export const useEntries = (guestbookId: string | undefined, authorToken: string)
         throw new Error('Memorista: Failed to fetch entries.');
       }
 
-      setEntries(data.sort(byCreationTimestamp));
+      setEntries(data.sort((entry1, entry2) => entry2.creationTimestamp - entry1.creationTimestamp));
     })();
   }, [request, response, guestbookId]);
 

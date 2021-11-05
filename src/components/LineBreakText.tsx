@@ -1,10 +1,11 @@
 import { Fragment } from 'preact';
+import { FC } from 'react';
 
-type Props = {
+interface Props {
   children: string;
-};
+}
 
-export const LineBreakText = ({ children }: Props) => (
+export const LineBreakText: FC<Props> = ({ children }) => (
   <>
     {children.split('\n').map((item, index) => (
       <Fragment key={index}>
