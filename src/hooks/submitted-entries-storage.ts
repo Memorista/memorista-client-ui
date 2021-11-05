@@ -39,9 +39,17 @@ export const useSubmittedEntriesStorage = () => {
     [submittedEntryIds]
   );
 
+  const deleteSubmittedEntryId = useCallback(
+    (entryId: string) => {
+      setSubmittedEntryIds(submittedEntryIds.filter((id) => id !== entryId));
+    },
+    [submittedEntryIds]
+  );
+
   return {
     submittedEntryIds,
     pushSubmittedEntryId,
+    deleteSubmittedEntryId,
     hasSubmissionInCurrentSession,
   };
 };

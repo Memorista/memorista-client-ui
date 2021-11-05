@@ -49,9 +49,10 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     return newAuthorToken;
   }, []);
   const { guestbook } = useGuestbook(apiKey);
-  const { entries, createEntry, updateEntry, isLoading } = useEntries(guestbook?.id, authorToken);
+  const { entries, createEntry, updateEntry, deleteEntry, isLoading } = useEntries(guestbook?.id, authorToken);
   const isMinTimeElapsed = useSpeedLimit(2);
-  const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId } = useSubmittedEntriesStorage();
+  const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId, deleteSubmittedEntryId } =
+    useSubmittedEntriesStorage();
 
   useEffect(() => {
     if (!guestbook) {
@@ -85,6 +86,11 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     }
 
     updateEntry(entryId, updates);
+  };
+
+  const handleDelete = (entryId: EntryModel['id']) => async () => {
+    await deleteEntry(entryId);
+    deleteSubmittedEntryId(entryId);
   };
 
   if (!guestbook) {
@@ -186,6 +192,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                 entry={entry}
                 submittedEntryIds={submittedEntryIds}
                 onUpdate={handleUpdate(entry.id)}
+                onDelete={handleDelete(entry.id)}
               />
             );
           })

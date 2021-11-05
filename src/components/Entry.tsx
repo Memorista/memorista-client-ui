@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Badge,
@@ -25,14 +25,16 @@ interface Props {
   entry: EntryModel;
   submittedEntryIds: Array<EntryModel['id']>;
   onUpdate: (updates: Partial<NewEntry>) => void;
+  onDelete: () => void;
 }
 
-export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate }) => {
+export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate, onDelete }) => {
   const { t } = useTranslation();
   const date = useMemo(() => fromUnixTime(entry.creationTimestamp), [entry.creationTimestamp]);
   const [updatedAuthor, setUpdatedAuthor] = useState(entry.author);
   const [updatedText, setUpdatedText] = useState(entry.text);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), [submittedEntryIds]);
 
   const avatarData = useMemo(
@@ -49,15 +51,16 @@ export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate }) => {
     const updates: Partial<NewEntry> = {};
     if (entry.author !== updatedAuthor) updates.author = updatedAuthor;
     if (entry.text !== updatedText) updates.text = updatedText;
-    if (Object.keys(updates).length === 0) return handleCancelEdit();
+    if (Object.keys(updates).length === 0) return handleCancel();
     onUpdate(updates);
     setIsEditing(false);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancel = () => {
     setUpdatedAuthor(entry.author);
     setUpdatedText(entry.text);
     setIsEditing(false);
+    setIsDeleting(false);
   };
 
   return (
@@ -86,29 +89,31 @@ export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate }) => {
             </Badge>
           )}
           {isAuthor &&
-            (isEditing ? (
+            (isEditing || isDeleting ? (
               <ButtonGroup size="xs" display="inline-flex" ml="2">
                 <IconButton
                   icon={(<CheckIcon />) as ReactElement}
                   aria-label={t('Save')}
-                  onClick={handleUpdate}
+                  onClick={isEditing ? handleUpdate : onDelete}
                   disabled={!updatedAuthor || !updatedText}
                 />
-                <IconButton
-                  icon={(<CloseIcon />) as ReactElement}
-                  aria-label={t('Cancel')}
-                  onClick={handleCancelEdit}
-                />
+                <IconButton icon={(<CloseIcon />) as ReactElement} aria-label={t('Cancel')} onClick={handleCancel} />
               </ButtonGroup>
             ) : (
-              <Flex display="inline-flex" ml="2">
+              <ButtonGroup size="xs" display="inline-flex" ml="2">
                 <IconButton
                   size="xs"
                   icon={(<EditIcon />) as ReactElement}
                   aria-label={t('Edit')}
                   onClick={() => setIsEditing(true)}
                 />
-              </Flex>
+                <IconButton
+                  size="xs"
+                  icon={(<DeleteIcon />) as ReactElement}
+                  aria-label={t('Delete')}
+                  onClick={() => setIsDeleting(true)}
+                />
+              </ButtonGroup>
             ))}
         </Text>
         <Text fontSize="sm">

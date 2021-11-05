@@ -19,6 +19,7 @@ const resources: Resource = {
       Edit: 'Bearbeiten',
       Save: 'Speichern',
       Cancel: 'Abbrechen',
+      Delete: 'Löschen',
     },
   },
 };

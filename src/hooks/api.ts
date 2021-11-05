@@ -60,6 +60,19 @@ export const useEntries = (guestbookId: string | undefined, authorToken: string)
     return updatedEntry;
   };
 
+  const deleteEntry = async (entryId: Entry['id']) => {
+    if (!guestbookId) {
+      throw new Error('Memorista: No guestbook ID provided.');
+    }
+
+    await request.delete(`/guestbooks/${guestbookId}/entries/${entryId}`);
+    if (!response.ok) {
+      throw new Error('Memorista: Failed to delete entry.');
+    }
+
+    setEntries(entries.filter((entry) => entry.id !== entryId));
+  };
+
   useEffect(() => {
     (async () => {
       if (!guestbookId) {
@@ -80,6 +93,7 @@ export const useEntries = (guestbookId: string | undefined, authorToken: string)
     entries,
     createEntry,
     updateEntry,
+    deleteEntry,
     isLoading: request.loading,
     error: request.error,
   };
