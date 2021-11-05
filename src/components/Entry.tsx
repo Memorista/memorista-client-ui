@@ -4,22 +4,21 @@ import {
   Badge,
   Box,
   ButtonGroup,
-  Editable,
-  EditableInput,
-  EditablePreview,
   Flex,
+  FormControl,
+  FormErrorMessage,
   IconButton,
-  IconButtonProps,
+  Input,
   Tag,
   TagLabel,
   Text,
+  Textarea,
   Tooltip,
-  useEditableControls,
 } from '@chakra-ui/react';
 import md5 from 'blueimp-md5';
 import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import Identicon from 'identicon.js';
-import { ReactElement, useMemo, VFC } from 'react';
+import { ReactElement, useMemo, useState, VFC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Entry as EntryModel, NewEntry } from '../models/entry';
 import { LineBreakText } from './LineBreakText';
@@ -27,12 +26,16 @@ import { LineBreakText } from './LineBreakText';
 interface EntryProps {
   entry: EntryModel;
   submittedEntryIds: Array<EntryModel['id']>;
-  onUpdate: (field: keyof NewEntry, value: string) => void;
+  onUpdate: (updates: Partial<NewEntry>) => void;
 }
 
 export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) => {
   const { t } = useTranslation();
   const date = useMemo(() => fromUnixTime(entry.creationTimestamp), [entry.creationTimestamp]);
+  const [updatedAuthor, setUpdatedAuthor] = useState(entry.author);
+  const [updatedText, setUpdatedText] = useState(entry.text);
+  const [isEditing, setIsEditing] = useState(false);
+  const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), []);
 
   const avatarData = useMemo(
     () =>
@@ -44,24 +47,35 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
     [entry.author]
   );
 
-  const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), []);
+  const onUpdateField = () => {
+    const updates: Partial<NewEntry> = {};
+    if (entry.author !== updatedAuthor) updates.author = updatedAuthor;
+    if (entry.text !== updatedText) updates.text = updatedText;
+    onUpdate(updates);
+    setIsEditing(false);
+  };
 
-  const onUpdateField = (field: keyof NewEntry) => (value: string) => onUpdate(field, value);
+  const onCancelEdit = () => {
+    setUpdatedAuthor(entry.author);
+    setUpdatedText(entry.text);
+    setIsEditing(false);
+  };
 
   return (
-    <Editable
-      key={entry.text}
-      defaultValue={entry.text}
-      display="flex"
-      onSubmit={onUpdateField('text')}
-      isDisabled={!isAuthor}
-      isPreviewFocusable={false}
-      submitOnBlur={false}
-    >
+    <Box display="flex" flexDirection="row" width="100%">
       <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />
-      <Box ml="3">
-        <Text fontWeight="bold" display="flex" mb="1">
-          {entry.author}
+      <Box ml="3" flex="1">
+        <Text fontWeight="bold" display="flex" mb="1" alignItems="center">
+          {isEditing ? (
+            <Input
+              maxWidth="200px"
+              value={updatedAuthor}
+              onChange={(e) => setUpdatedAuthor(e.target.value)}
+              isInvalid={!updatedAuthor}
+            />
+          ) : (
+            entry.author
+          )}
           <Tooltip label={formatDistanceToNow(date, { addSuffix: true })}>
             <Tag size="sm" mx="1" verticalAlign="middle">
               <TagLabel>{format(date, 'dd.MM.yyyy - HH:mm')}</TagLabel>
@@ -72,34 +86,41 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
               {t('You')}
             </Badge>
           )}
-          {isAuthor && <EditableControls />}
+          {isAuthor &&
+            (isEditing ? (
+              <ButtonGroup size="xs" display="inline-flex" ml="2">
+                <IconButton
+                  icon={(<CheckIcon />) as ReactElement}
+                  aria-label={t('Save')}
+                  onClick={onUpdateField}
+                  disabled={!updatedAuthor || !updatedText}
+                />
+                <IconButton icon={(<CloseIcon />) as ReactElement} aria-label={t('Cancel')} onClick={onCancelEdit} />
+              </ButtonGroup>
+            ) : (
+              <Flex display="inline-flex" ml="2">
+                <IconButton
+                  size="xs"
+                  icon={(<EditIcon />) as ReactElement}
+                  aria-label={t('Edit')}
+                  onClick={() => setIsEditing(true)}
+                />
+              </Flex>
+            ))}
         </Text>
         <Text fontSize="sm">
-          {isAuthor ? (
-            <>
-              <EditablePreview />
-              <EditableInput />
-            </>
+          {isEditing ? (
+            <Textarea
+              maxWidth="300px"
+              value={updatedText}
+              onChange={(e) => setUpdatedText(e.target.value)}
+              isInvalid={!updatedText}
+            />
           ) : (
             <LineBreakText>{entry.text}</LineBreakText>
           )}
         </Text>
       </Box>
-    </Editable>
-  );
-};
-
-const EditableControls: VFC = () => {
-  const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps } = useEditableControls();
-
-  return isEditing ? (
-    <ButtonGroup size="xs" display="inline-flex" ml="2">
-      <IconButton icon={(<CheckIcon />) as ReactElement} {...(getSubmitButtonProps() as IconButtonProps)} />
-      <IconButton icon={(<CloseIcon />) as ReactElement} {...(getCancelButtonProps() as IconButtonProps)} />
-    </ButtonGroup>
-  ) : (
-    <Flex display="inline-flex" ml="2">
-      <IconButton size="xs" icon={(<EditIcon />) as ReactElement} {...(getEditButtonProps() as IconButtonProps)} />
-    </Flex>
+    </Box>
   );
 };

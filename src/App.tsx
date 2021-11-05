@@ -12,9 +12,11 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
+import md5 from 'blueimp-md5';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo } from 'preact/hooks';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import { Entry } from './components/Entry';
@@ -36,7 +38,7 @@ type FormValues = {
 
 export const App: FunctionComponent<Props> = ({ apiKey }) => {
   const { t, i18n } = useTranslation();
-  const authorName = useMemo(() => localStorage.getItem('memorista:authorName') || '', []);
+  const [authorName, setAuthorName] = useState(() => localStorage.getItem('memorista:authorName') || '');
   const authorToken = useMemo(() => {
     const token = localStorage.getItem('memorista:authorToken');
     if (token) return token;
@@ -77,12 +79,13 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     pushSubmittedEntryId(createdEntry.id);
   };
 
-  const onUpdateField = (entryId: EntryModel['id']) => (field: keyof NewEntry, value: string) => {
-    if (field === 'author') {
-      localStorage.setItem('memorista:authorName', value);
+  const onUpdate = (entryId: EntryModel['id']) => (updates: Partial<NewEntry>) => {
+    if (updates.author) {
+      localStorage.setItem('memorista:authorName', updates.author);
+      setAuthorName(updates.author);
     }
 
-    updateEntry(entryId, { [field]: value });
+    updateEntry(entryId, updates);
   };
 
   if (!guestbook) {
@@ -102,6 +105,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
       {!hasSubmissionInCurrentSession ? (
         <Formik
+          key={authorName}
           initialValues={initialValues}
           validateOnMount={true}
           validate={(values) => {
@@ -174,14 +178,18 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
             <SkeletonEntry />
           </>
         ) : (
-          entries.map((entry) => (
-            <Entry
-              key={entry.id}
-              entry={entry}
-              submittedEntryIds={submittedEntryIds}
-              onUpdate={onUpdateField(entry.id)}
-            />
-          ))
+          entries.map((entry) => {
+            const entryHash = md5(`${entry.author}${entry.text}`);
+
+            return (
+              <Entry
+                key={entryHash}
+                entry={entry}
+                submittedEntryIds={submittedEntryIds}
+                onUpdate={onUpdate(entry.id)}
+              />
+            );
+          })
         )}
       </VStack>
     </VStack>
