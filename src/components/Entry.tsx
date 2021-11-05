@@ -49,6 +49,7 @@ export const Entry: VFC<Props> = ({ entry, submittedEntryIds, onUpdate }) => {
     const updates: Partial<NewEntry> = {};
     if (entry.author !== updatedAuthor) updates.author = updatedAuthor;
     if (entry.text !== updatedText) updates.text = updatedText;
+    if (Object.keys(updates).length === 0) return handleCancelEdit();
     onUpdate(updates);
     setIsEditing(false);
   };
