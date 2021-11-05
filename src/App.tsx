@@ -70,7 +70,6 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     }
 
     const createdEntry = await createEntry({ author, text });
-
     if (!createdEntry) {
       return;
     }

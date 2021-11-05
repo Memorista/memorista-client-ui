@@ -35,7 +35,7 @@ export const Entry: VFC<EntryProps> = ({ entry, submittedEntryIds, onUpdate }) =
   const [updatedAuthor, setUpdatedAuthor] = useState(entry.author);
   const [updatedText, setUpdatedText] = useState(entry.text);
   const [isEditing, setIsEditing] = useState(false);
-  const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), []);
+  const isAuthor = useMemo(() => submittedEntryIds.includes(entry.id), [submittedEntryIds]);
 
   const avatarData = useMemo(
     () =>
