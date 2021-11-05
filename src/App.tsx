@@ -135,7 +135,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                 </Field>
                 <Field name="name">
                   {({ field }: FieldProps) => (
-                    <FormControl isInvalid={!!(errors.name && touched.name)} style={{ display: 'none' }}>
+                    <FormControl isInvalid={!!(errors.name && touched.name)} display="none">
                       <FormLabel htmlFor="name">
                         {t('Please leave this field blank as it is used for spam protection.')}
                       </FormLabel>
