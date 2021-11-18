@@ -101,13 +101,15 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
   return (
     <VStack alignItems="flex-start" spacing="4">
-      <VStack alignItems="flex-start">
-        <Heading>{guestbook.title}</Heading>
-        <Text>{guestbook.description}</Text>
-      </VStack>
-
-      <Divider />
-
+      {guestbook.title || guestbook.description ? (
+        <>
+          <VStack alignItems="flex-start">
+            {guestbook.title && <Heading>{guestbook.title}</Heading>}
+            {guestbook.description && <Text>{guestbook.description}</Text>}
+          </VStack>
+          <Divider />
+        </>
+      ) : undefined}
       {!hasSubmissionInCurrentSession ? (
         <Formik
           key={authorName}
