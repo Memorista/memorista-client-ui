@@ -183,19 +183,15 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
             <SkeletonEntry />
           </>
         ) : (
-          entries.map((entry) => {
-            const entryHash = md5(`${entry.author}${entry.text}`);
-
-            return (
-              <Entry
-                key={entryHash}
-                entry={entry}
-                submittedEntryIds={submittedEntryIds}
-                onUpdate={handleUpdate(entry.id)}
-                onDelete={handleDelete(entry.id)}
-              />
-            );
-          })
+          entries.map((entry) => (
+            <Entry
+              key={md5(`${entry.author}${entry.text}`)}
+              entry={entry}
+              submittedEntryIds={submittedEntryIds}
+              onUpdate={handleUpdate(entry.id)}
+              onDelete={handleDelete(entry.id)}
+            />
+          ))
         )}
       </VStack>
     </VStack>
