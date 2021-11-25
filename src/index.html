@@ -6,9 +6,6 @@
     <title>Memorista Sample Page</title>
   </head>
   <body>
-    <x-memorista
-      api-base-url="https://x1r5cxtl6d.execute-api.eu-central-1.amazonaws.com/dev"
-      api-key="ed7fdbfc-27e2-4955-92f4-6b7ec4b5f5e2"
-    />
+    <x-memorista api-base-url="<%= process.env.API_BASE_URL %>" api-key="<%= process.env.API_KEY %>" />
   </body>
 </html>
