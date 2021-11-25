@@ -15,8 +15,12 @@
 
 ```html
 <script crossorigin src="https://unpkg.com/@memorista/client-ui@2/dist/index.bundle.js"></script>
-<x-memorista api-key="ed7fdbfc-27e2-4955-92f4-6b7ec4b5f5e2"></x-memorista>
+<x-memorista api-key="your-api-key"></x-memorista>
 ```
+
+## :computer: Development
+
+Before you start, make sure to create a `.env` file based on the `.env.example` and fill in your API key which you would like to use for local development.
 
 ## :raising_hand: Contributors
 
