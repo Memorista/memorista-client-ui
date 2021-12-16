@@ -21,6 +21,11 @@ export const useSubmittedEntriesStorage = () => {
     if (data === localStorage.getItem(storageKey)) return;
 
     localStorage.setItem(storageKey, data);
+
+    if (submittedEntryIds.length === 0) {
+      setHasSubmissionInCurrentSession(false);
+      sessionStorage.removeItem(hasSubmissionInCurrentSessionKey);
+    }
   }, [submittedEntryIds]);
 
   useEffect(() => {
