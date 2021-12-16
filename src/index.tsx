@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { FunctionComponent } from 'preact';
 import register from 'preact-custom-element';
 import { CachePolicies, IncomingOptions, Provider as HttpProvider } from 'use-http';
@@ -10,7 +10,7 @@ type Props = {
   apiKey?: string;
 };
 
-const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memorista.io/v1', apiKey = '' }) => {
+const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memorista.io/v2', apiKey = '' }) => {
   const options: IncomingOptions = {
     cachePolicy: CachePolicies.NO_CACHE,
     headers: {
@@ -22,6 +22,7 @@ const Memorista: FunctionComponent<Props> = ({ apiBaseUrl = 'https://api.memoris
     <HttpProvider url={apiBaseUrl} options={options}>
       <ChakraProvider>
         <App apiKey={apiKey} />
+        <ColorModeScript initialColorMode="light" />
       </ChakraProvider>
     </HttpProvider>
   );

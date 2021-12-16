@@ -1,37 +1,30 @@
 import {
   Alert,
   AlertIcon,
-  Avatar,
-  Badge,
-  Box,
   Button,
   Divider,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
   Input,
-  Tag,
-  TagLabel,
   Text,
   Textarea,
-  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 import md5 from 'blueimp-md5';
-import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import Identicon from 'identicon.js';
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo } from 'preact/hooks';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LineBreakText } from './components/LineBreakText';
+import { v4 as uuid } from 'uuid';
+import { Entry } from './components/Entry';
 import { SkeletonEntry } from './components/SkeletonEntry';
-import { NewEntry } from './models/entry';
-import { useEntries, useGuestbook } from './utils/api-hooks';
-import useSpeedLimit from './utils/use-speed-limit';
-import { useSubmittedEntriesStorage } from './utils/use-submitted-entries-storage';
+import { useEntries, useGuestbook } from './hooks/api';
+import { useSpeedLimit } from './hooks/speed-limit';
+import { useSubmittedEntriesStorage } from './hooks/submitted-entries-storage';
+import { Entry as EntryModel, NewEntry } from './models/entry';
 
 type Props = {
   apiKey: string;
@@ -45,11 +38,21 @@ type FormValues = {
 
 export const App: FunctionComponent<Props> = ({ apiKey }) => {
   const { t, i18n } = useTranslation();
+  const [authorName, setAuthorName] = useState(() => localStorage.getItem('memorista:authorName') || '');
+  const authorToken = useMemo(() => {
+    const token = localStorage.getItem('memorista:authorToken');
+    if (token) return token;
+
+    const newAuthorToken = uuid();
+    localStorage.setItem('memorista:authorToken', newAuthorToken);
+
+    return newAuthorToken;
+  }, []);
   const { guestbook } = useGuestbook(apiKey);
-  const { entries, createEntry, isLoading } = useEntries(guestbook?.id);
+  const { entries, createEntry, updateEntry, deleteEntry, isLoading } = useEntries(guestbook?.id, authorToken);
   const isMinTimeElapsed = useSpeedLimit(2);
-  const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId } = useSubmittedEntriesStorage();
-  const authorName = useMemo(() => localStorage.getItem('memorista:authorName') || '', []);
+  const { submittedEntryIds, hasSubmissionInCurrentSession, pushSubmittedEntryId, deleteSubmittedEntryId } =
+    useSubmittedEntriesStorage();
 
   useEffect(() => {
     if (!guestbook) {
@@ -59,22 +62,35 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
     i18n.changeLanguage(guestbook.languageTag);
   }, [guestbook]);
 
-  const onSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     const { author, text } = values as NewEntry;
 
     const isSpam = !!values.name || !isMinTimeElapsed;
     if (isSpam) {
-      throw new Error('Possible spam bot detected. Form was not submitted.');
+      throw new Error('Memorista: Possible spam bot detected. Form was not submitted.');
     }
 
     const createdEntry = await createEntry({ author, text });
-
     if (!createdEntry) {
       return;
     }
 
     localStorage.setItem('memorista:authorName', createdEntry.author);
     pushSubmittedEntryId(createdEntry.id);
+  };
+
+  const handleUpdate = (entryId: EntryModel['id']) => (updates: Partial<NewEntry>) => {
+    if (updates.author) {
+      localStorage.setItem('memorista:authorName', updates.author);
+      setAuthorName(updates.author);
+    }
+
+    updateEntry(entryId, updates);
+  };
+
+  const handleDelete = (entryId: EntryModel['id']) => async () => {
+    await deleteEntry(entryId);
+    deleteSubmittedEntryId(entryId);
   };
 
   if (!guestbook) {
@@ -85,15 +101,18 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
   return (
     <VStack alignItems="flex-start" spacing="4">
-      <VStack alignItems="flex-start">
-        <Heading>{guestbook.title}</Heading>
-        <Text>{guestbook.description}</Text>
-      </VStack>
-
-      <Divider />
-
+      {guestbook.title || guestbook.description ? (
+        <>
+          <VStack alignItems="flex-start">
+            {guestbook.title && <Heading>{guestbook.title}</Heading>}
+            {guestbook.description && <Text>{guestbook.description}</Text>}
+          </VStack>
+          <Divider />
+        </>
+      ) : undefined}
       {!hasSubmissionInCurrentSession ? (
         <Formik
+          key={authorName}
           initialValues={initialValues}
           validateOnMount={true}
           validate={(values) => {
@@ -108,7 +127,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
 
             return errors;
           }}
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit}
         >
           {({ isSubmitting, errors, touched, isValid }) => (
             <Form style={{ width: '100%' }}>
@@ -124,7 +143,7 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
                 </Field>
                 <Field name="name">
                   {({ field }: FieldProps) => (
-                    <FormControl isInvalid={!!(errors.name && touched.name)} style={{ display: 'none' }}>
+                    <FormControl isInvalid={!!(errors.name && touched.name)} display="none">
                       <FormLabel htmlFor="name">
                         {t('Please leave this field blank as it is used for spam protection.')}
                       </FormLabel>
@@ -166,39 +185,15 @@ export const App: FunctionComponent<Props> = ({ apiKey }) => {
             <SkeletonEntry />
           </>
         ) : (
-          entries.map((entry) => {
-            const date = fromUnixTime(entry.creationTimestamp);
-
-            const avatarData = new Identicon(md5(entry.author), {
-              size: 32,
-              margin: 0.25,
-              format: 'svg',
-            }).toString();
-
-            return (
-              <Flex key={entry.id}>
-                <Avatar src={`data:image/svg+xml;base64,${avatarData}`} />
-                <Box ml="3">
-                  <Text fontWeight="bold">
-                    {entry.author}
-                    <Tooltip label={formatDistanceToNow(date, { addSuffix: true })}>
-                      <Tag size="sm" mx="1" verticalAlign="middle">
-                        <TagLabel>{format(date, 'dd.MM.yyyy - HH:mm')}</TagLabel>
-                      </Tag>
-                    </Tooltip>
-                    {submittedEntryIds.includes(entry.id) && (
-                      <Badge ml="1" colorScheme="green">
-                        {t('You')}
-                      </Badge>
-                    )}
-                  </Text>
-                  <Text fontSize="sm">
-                    <LineBreakText>{entry.text}</LineBreakText>
-                  </Text>
-                </Box>
-              </Flex>
-            );
-          })
+          entries.map((entry) => (
+            <Entry
+              key={md5(`${entry.author}${entry.text}`)}
+              entry={entry}
+              submittedEntryIds={submittedEntryIds}
+              onUpdate={handleUpdate(entry.id)}
+              onDelete={handleDelete(entry.id)}
+            />
+          ))
         )}
       </VStack>
     </VStack>

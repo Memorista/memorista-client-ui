@@ -21,6 +21,11 @@ export const useSubmittedEntriesStorage = () => {
     if (data === localStorage.getItem(storageKey)) return;
 
     localStorage.setItem(storageKey, data);
+
+    if (submittedEntryIds.length === 0) {
+      setHasSubmissionInCurrentSession(false);
+      sessionStorage.removeItem(hasSubmissionInCurrentSessionKey);
+    }
   }, [submittedEntryIds]);
 
   useEffect(() => {
@@ -39,9 +44,17 @@ export const useSubmittedEntriesStorage = () => {
     [submittedEntryIds]
   );
 
+  const deleteSubmittedEntryId = useCallback(
+    (entryId: string) => {
+      setSubmittedEntryIds(submittedEntryIds.filter((id) => id !== entryId));
+    },
+    [submittedEntryIds]
+  );
+
   return {
     submittedEntryIds,
     pushSubmittedEntryId,
+    deleteSubmittedEntryId,
     hasSubmissionInCurrentSession,
   };
 };

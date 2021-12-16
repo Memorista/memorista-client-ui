@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-const useSpeedLimit = (minTimeSeconds: number) => {
+export const useSpeedLimit = (minTimeSeconds: number) => {
   const timeoutHandle = useRef<number>();
   const [minTimeElapsed, setMinTimeElapsed] = useState<boolean>(false);
 
@@ -16,5 +16,3 @@ const useSpeedLimit = (minTimeSeconds: number) => {
 
   return minTimeElapsed;
 };
-
-export default useSpeedLimit;

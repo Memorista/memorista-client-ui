@@ -16,6 +16,10 @@ const resources: Resource = {
       'Your entry has been successfully saved.': 'Ihr Eintrag wurde erfolgreich gespeichert.',
       Entries: 'Einträge',
       You: 'Sie',
+      Edit: 'Bearbeiten',
+      Save: 'Speichern',
+      Cancel: 'Abbrechen',
+      Delete: 'Löschen',
     },
   },
 };
